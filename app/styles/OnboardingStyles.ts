@@ -1,11 +1,18 @@
 import { StyleSheet } from 'react-native';
 
 export const COLORS = {
+  // Cores Base do Tema
   background: '#1C1C1E', 
-  textPrimary: '#FFFFFF',
-  textSecondary: '#AEAEB2',
+  textPrimary: '#FFFFFF', 
   accent: '#AFFF00', 
-  buttonText: '#1C1C1E',
+  buttonText: '#1C1C1E', 
+
+  textSecondary: '#AEAEB2', 
+  textMuted: '#AEAEB2',     
+
+  income: '#00C853',    
+  expense: '#DC3545',  
+  itemBackground: '#2C2C2E', 
 };
 
 const styles = StyleSheet.create({
@@ -28,31 +35,12 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     marginTop: 40,
   },
-  placeholderText: {
-    color: COLORS.textSecondary,
-    fontSize: 16,
-  },
-  textBlock: {
-    width: '100%',
-    alignItems: 'center',
-    marginBottom: 40,
-  },
   title: {
     fontSize: 30,
     fontWeight: '800',
     color: COLORS.textPrimary,
     textAlign: 'center',
-    marginBottom: 10,
-    lineHeight: 38,
   },
-  subtitle: {
-    fontSize: 16,
-    color: COLORS.textSecondary,
-    textAlign: 'center',
-    paddingHorizontal: 20,
-  },
-  
-
   buttonSpacing: { 
     marginTop: 20, 
   },

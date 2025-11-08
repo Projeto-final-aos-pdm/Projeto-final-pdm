@@ -1,5 +1,9 @@
 import React from 'react';
-import { View, Text, StyleSheet, SafeAreaView, StatusBar, FlatList, TouchableOpacity } from 'react-native';
+import { 
+    View, Text, StyleSheet, SafeAreaView, 
+    StatusBar, FlatList, TouchableOpacity, 
+    ListRenderItem 
+} from 'react-native';
 import { Stack, router } from 'expo-router';
 import { MaterialCommunityIcons } from '@expo/vector-icons'; 
 
@@ -7,11 +11,22 @@ import DashboardHeader from './components/DashboardHeader';
 import TransactionListItem from './components/TransactionListItem'; 
 import { COLORS } from './styles/OnboardingStyles'; 
 
-const DUMMY_TRANSACTIONS = [
-  { id: '1', type: 'Expense', title: 'Health', description: 'checkup fee', amount: '25.00', date: '11 Dec', iconColor: '#E91E63', iconName: 'heart-outline' },
-  { id: '2', type: 'Income', title: 'Income', description: 'Gift from Family', amount: '60.00', date: '10 Dec', iconColor: '#00C853', iconName: 'currency-usd' },
-  { id: '3', type: 'Expense', title: 'Clothing', description: 'Winter Clothing', amount: '20.00', date: '10 Dec', iconColor: '#9C27B0', iconName: 'hanger' },
-  { id: '4', type: 'Income', title: 'Income', description: 'Cashback from CC', amount: '90.00', date: '9 Dec', iconColor: '#00C853', iconName: 'cash-usd' },
+type TransactionData = {
+  id: string;
+  type: 'Income' | 'Expense';
+  title: string;
+  description: string;
+  amount: string;
+  date: string;
+  iconColor: string;
+  iconName: string | keyof typeof MaterialCommunityIcons.glyphMap;
+};
+
+const DUMMY_TRANSACTIONS: TransactionData[] = [
+  { id: 'uuid-1', type: 'Expense', title: 'Health', description: 'checkup fee', amount: '25.00', date: '11 Dec', iconColor: '#E91E63', iconName: 'heart-outline' },
+  { id: 'uuid-2', type: 'Income', title: 'Income', description: 'Gift from Family', amount: '60.00', date: '10 Dec', iconColor: '#00C853', iconName: 'currency-usd' },
+  { id: 'uuid-3', type: 'Expense', title: 'Clothing', description: 'Winter Clothing', amount: '20.00', date: '10 Dec', iconColor: '#9C27B0', iconName: 'hanger' },
+  { id: 'uuid-4', type: 'Income', title: 'Income', description: 'Cashback from CC', amount: '90.00', date: '9 Dec', iconColor: '#00C853', iconName: 'cash-usd' },
 ];
 
 const HomeScreen: React.FC = () => {
@@ -24,49 +39,45 @@ const HomeScreen: React.FC = () => {
 
   const handleAddTransaction = () => {
     router.push('/add-transaction');
-    console.log("Navegar para Adicionar Transação");
   };
 
-  const renderItem = ({ item }) => (
+  const renderItem: ListRenderItem<TransactionData> = ({ item }) => (
     <TransactionListItem 
       transaction={item} 
-      onPress={() => router.push(`/transaction/${item.id}`)} // Navegar para detalhes/edição
+      onPress={() => router.push({
+        pathname: "/transaction/[id]",
+        params: { id: item.id }
+      })} 
     />
   );
 
   return (
     <SafeAreaView style={styles.safeArea}>
       <StatusBar barStyle="light-content" backgroundColor={COLORS.background} />
-      {/* Oculta o header nativo, pois usamos um componente customizado (DashboardHeader) */}
       <Stack.Screen options={{ headerShown: false }} /> 
       
       <FlatList 
         ListHeaderComponent={() => (
           <View style={styles.headerComponent}>
-            {/* 1. Componente de Cabeçalho e Card de Saldo */}
             <DashboardHeader 
               userName={userBalance.userName}
               totalBalance={userBalance.totalBalance}
               totalIncome={userBalance.totalIncome}
               totalExpense={userBalance.totalExpense}
             />
-            {/* 2. Título da Lista */}
             <Text style={styles.recentTransactionsTitle}>Recent Transactions</Text>
           </View>
         )}
         data={DUMMY_TRANSACTIONS}
         renderItem={renderItem}
-        keyExtractor={item => item.id}
+        keyExtractor={(item: TransactionData) => item.id}
         contentContainerStyle={styles.listContent}
         showsVerticalScrollIndicator={false}
       />
       
-      {/* 3. Floating Action Button (FAB) */}
       <TouchableOpacity style={styles.fab} onPress={handleAddTransaction}>
         <MaterialCommunityIcons name="plus" size={30} color={COLORS.background} />
       </TouchableOpacity>
-
-      {/* A TabBar seria renderizada pelo componente de layout do Expo Router (não neste arquivo) */}
     </SafeAreaView>
   );
 };
@@ -77,11 +88,11 @@ const styles = StyleSheet.create({
     backgroundColor: COLORS.background,
   },
   headerComponent: {
-    paddingHorizontal: 5, 
+    paddingHorizontal: 5,
   },
   listContent: {
-    paddingHorizontal: 20, 
-    paddingBottom: 120, 
+    paddingHorizontal: 20,
+    paddingBottom: 120,
   },
   recentTransactionsTitle: {
     fontSize: 20,
@@ -89,8 +100,8 @@ const styles = StyleSheet.create({
     color: COLORS.textPrimary,
     marginBottom: 15,
     marginTop: 10,
+    paddingHorizontal: 5,
   },
-  
   fab: {
     position: 'absolute',
     width: 60,
@@ -98,7 +109,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     right: 25,
-    bottom: 25, 
+    bottom: 25,
     backgroundColor: COLORS.accent,
     borderRadius: 30,
     shadowColor: '#000',

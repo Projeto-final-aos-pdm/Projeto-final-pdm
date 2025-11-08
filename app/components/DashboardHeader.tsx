@@ -1,8 +1,7 @@
 import React from 'react';
-import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity, ViewStyle, TextStyle } from 'react-native';
 import { MaterialCommunityIcons } from '@expo/vector-icons'; 
-
-import { COLORS as GlobalColors } from '../styles/OnboardingStyles'; 
+import { COLORS as GlobalColors } from '../styles/OnboardingStyles';
 
 interface DashboardHeaderProps {
   userName: string;
@@ -13,12 +12,11 @@ interface DashboardHeaderProps {
 
 const COLORS = {
   ...GlobalColors, 
-  cardBackground: '#39393C', // Um cinza mais claro para o card
-  textLight: GlobalColors.textPrimary, // Branco
-  textMuted: '#AEAEB2', // Cinza claro
-  income: '#00C853', // Verde para Renda
-  expense: '#DC3545', // Vermelho para Despesa
-  accent: GlobalColors.accent, // Verde-Limão
+  cardBackground: '#39393C', 
+  textLight: GlobalColors.textPrimary,
+  textMuted: GlobalColors.textSecondary,
+  income: GlobalColors.income,
+  expense: GlobalColors.expense,
 };
 
 const DashboardHeader: React.FC<DashboardHeaderProps> = ({ 
@@ -34,7 +32,6 @@ const DashboardHeader: React.FC<DashboardHeaderProps> = ({
   return (
     <View style={styles.container}>
       
-      {/* 1. Header Superior (Saudação e Ícones) */}
       <View style={styles.topBar}>
         <View>
           <Text style={styles.welcomeText}>Welcome Back!</Text>
@@ -59,31 +56,29 @@ const DashboardHeader: React.FC<DashboardHeaderProps> = ({
         </View>
       </View>
 
-      {/* 2. Card de Resumo de Saldo */}
       <View style={styles.balanceCard}>
         <Text style={styles.balanceTitle}>Total Balance</Text>
         <Text style={styles.balanceAmount}>{totalBalance}</Text>
         
         <View style={styles.detailsRow}>
-          {/* Card de Renda */}
+          
           <View style={styles.detailBox}>
-            <View style={styles.iconCircle(COLORS.income)}>
+            <View style={dynamicStyles.iconCircle(COLORS.income)}>
               <MaterialCommunityIcons name="arrow-bottom-left" size={20} color={COLORS.cardBackground} />
             </View>
             <View>
               <Text style={styles.detailLabel}>Income</Text>
-              <Text style={styles.detailAmount(COLORS.income)}>{totalIncome}</Text>
+              <Text style={dynamicStyles.detailAmount(COLORS.income)}>{totalIncome}</Text>
             </View>
           </View>
 
-          {/* Card de Despesa */}
           <View style={styles.detailBox}>
-            <View style={styles.iconCircle(COLORS.expense)}>
+            <View style={dynamicStyles.iconCircle(COLORS.expense)}>
               <MaterialCommunityIcons name="arrow-top-right" size={20} color={COLORS.cardBackground} />
             </View>
             <View>
               <Text style={styles.detailLabel}>Expense</Text>
-              <Text style={styles.detailAmount(COLORS.expense)}>{totalExpense}</Text>
+              <Text style={dynamicStyles.detailAmount(COLORS.expense)}>{totalExpense}</Text>
             </View>
           </View>
         </View>
@@ -92,14 +87,30 @@ const DashboardHeader: React.FC<DashboardHeaderProps> = ({
   );
 };
 
+const dynamicStyles = {
+    iconCircle: (color: string): ViewStyle => ({
+        backgroundColor: color,
+        width: 40,
+        height: 40,
+        borderRadius: 20,
+        justifyContent: 'center',
+        alignItems: 'center',
+        marginRight: 10,
+    }),
+    detailAmount: (color: string): TextStyle => ({
+        color: color,
+        fontSize: 16,
+        fontWeight: 'bold',
+        marginTop: 2,
+    }),
+};
+
 const styles = StyleSheet.create({
   container: {
     width: '100%',
     paddingBottom: 20,
     paddingTop: 10,
   },
-  
-  // --- Top Bar ---
   topBar: {
     flexDirection: 'row',
     justifyContent: 'space-between',
@@ -122,8 +133,6 @@ const styles = StyleSheet.create({
   iconSpacing: {
     marginRight: 15,
   },
-
-  // --- Balance Card ---
   balanceCard: {
     backgroundColor: COLORS.cardBackground,
     borderRadius: 15,
@@ -135,8 +144,8 @@ const styles = StyleSheet.create({
     elevation: 5,
   },
   balanceTitle: {
-    color: COLORS.textMuted,
     fontSize: 16,
+    color: COLORS.textMuted,
   },
   balanceAmount: {
     color: COLORS.textLight,
@@ -144,8 +153,6 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     marginVertical: 10,
   },
-  
-  // --- Income/Expense Details ---
   detailsRow: {
     flexDirection: 'row',
     justifyContent: 'space-between',
@@ -156,25 +163,10 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     width: '50%',
   },
-  iconCircle: (color: string) => ({
-    backgroundColor: color,
-    width: 40,
-    height: 40,
-    borderRadius: 20,
-    justifyContent: 'center',
-    alignItems: 'center',
-    marginRight: 10,
-  }),
   detailLabel: {
     color: COLORS.textMuted,
     fontSize: 12,
   },
-  detailAmount: (color: string) => ({
-    color: color,
-    fontSize: 16,
-    fontWeight: 'bold',
-    marginTop: 2,
-  }),
 });
 
 export default DashboardHeader;
