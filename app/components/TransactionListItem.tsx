@@ -37,7 +37,7 @@ const TransactionListItem: React.FC<TransactionListItemProps> = ({ transaction, 
     <TouchableOpacity style={styles.container} onPress={onPress} activeOpacity={0.8}>
       <View style={styles.leftContainer}>
         
-        {/* Ícone da Categoria - Usa a função de estilo dinâmico */}
+        {/* Ícone da Categoria */}
         <View style={dynamicStyles.iconWrapper(transaction.iconColor)}>
           <MaterialCommunityIcons 
             name={transaction.iconName as keyof typeof MaterialCommunityIcons.glyphMap} 

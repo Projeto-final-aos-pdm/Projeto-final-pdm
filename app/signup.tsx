@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { View, Text, StyleSheet, SafeAreaView, StatusBar, ScrollView, TouchableOpacity } from 'react-native';
-import { Stack } from 'expo-router'; 
+import { Stack, router } from 'expo-router'; 
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 
 import PrimaryButton from './components/ui/PrimaryButton';
@@ -15,42 +15,45 @@ const SignUpScreen: React.FC = () => {
 
   const handleSignUp = () => {
     if (!name || !email || !password) {
-      alert('Por favor, preencha todos os campos.');
-      return;
+      // alert('Por favor, preencha todos os campos.'); 
+      // return;
     }
     
     console.log('Dados de Registro:', { name, email, password });
+    
+    // router.replace('/home'); 
+    
+     router.push('/login'); 
   };
 
   const handleLoginNavigation = () => {
-    // Usar 'router.replace' ou 'router.push' do expo-router
-    console.log("Navegar para Login");
+    router.push('/login'); 
   };
+  
+  const handleBack = () => {
+      router.back();
+  }
 
   return (
     <SafeAreaView style={styles.safeArea}>
-      {/* Configuração do Status Bar e da Navegação (Header) */}
       <StatusBar barStyle="light-content" backgroundColor={COLORS.background} />
       <Stack.Screen options={{ headerShown: false }} /> 
       
       <ScrollView contentContainerStyle={styles.scrollContent} keyboardShouldPersistTaps="handled">
         <View style={styles.container}>
           
-          {/* Botão de Voltar - Componente simples (pode ser refatorado) */}
           <TouchableOpacity 
-            onPress={() => console.log('Voltar')} 
+            onPress={handleBack} 
             style={styles.backButton}
           >
              <MaterialCommunityIcons name="arrow-left" size={24} color={COLORS.textPrimary} />
           </TouchableOpacity>
 
-          {/* Cabeçalho */}
           <AuthHeader 
             title="Let's Get Started"
             subtitle="Create an account to track your expenses"
           />
 
-          {/* Formulário de Inputs */}
           <View style={styles.formContainer}>
             <AuthInput 
               iconName="account" 
@@ -74,13 +77,11 @@ const SignUpScreen: React.FC = () => {
             />
           </View>
           
-          {/* Botão de Registro */}
           <PrimaryButton 
             title="Sign Up" 
             onPress={handleSignUp}
           />
           
-          {/* Link para Login */}
           <View style={styles.footer}>
             <Text style={styles.footerText}>
               Already have an account? 
@@ -114,18 +115,14 @@ const styles = StyleSheet.create({
     width: '100%',
     alignItems: 'flex-start',
   },
-  
   backButton: {
     padding: 5,
     marginBottom: 20,
   },
-  
   formContainer: {
     width: '100%',
     marginBottom: 20,
   },
-
-  // Rodapé
   footer: {
     width: '100%',
     alignItems: 'center',

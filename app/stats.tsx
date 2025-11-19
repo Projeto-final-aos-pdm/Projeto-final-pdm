@@ -39,7 +39,7 @@ const StatsScreen: React.FC = () => {
             </TouchableOpacity>
         </View>
 
-        {/* 1. Abas de Período (Segmented Control) */}
+        {/* Abas de Período (Segmented Control) */}
         <View style={styles.periodTabs}>
           {['Month', 'Week', 'Year'].map(period => (
             <TouchableOpacity
@@ -54,10 +54,10 @@ const StatsScreen: React.FC = () => {
           ))}
         </View>
 
-        {/* 2. Gráfico */}
+        {/* Gráfico */}
         <SpendingChart data={CHART_DATA} totalSpent={TOTAL_SPENT} />
 
-        {/* 3. Detalhes de Gastos por Categoria */}
+        {/* Detalhes de Gastos por Categoria */}
         <View style={styles.detailsListContainer}>
           <Text style={styles.listTitle}>Top Spending Categories</Text>
           

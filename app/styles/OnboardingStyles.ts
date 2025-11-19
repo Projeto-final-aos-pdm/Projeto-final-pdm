@@ -1,7 +1,6 @@
 import { StyleSheet } from 'react-native';
 
 export const COLORS = {
-  // Cores Base do Tema
   background: '#1C1C1E', 
   textPrimary: '#FFFFFF', 
   accent: '#AFFF00', 

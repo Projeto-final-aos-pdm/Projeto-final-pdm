@@ -7,11 +7,10 @@ interface SpendingChartProps {
 }
 
 const SpendingChart: React.FC<SpendingChartProps> = ({ data, totalSpent }) => {
-  // Simulação: Aqui entra o código real do gráfico 
 
   return (
     <View style={styles.chartContainer}>
-      {/* 1. Área do Gráfico (Simulação Visual) */}
+      {/* 1. Área do Gráfico */}
       <View style={styles.chartArea}>
         <Text style={styles.totalLabel}>Total Spent</Text>
         <Text style={styles.totalAmount}>${totalSpent.toFixed(2)}</Text>
