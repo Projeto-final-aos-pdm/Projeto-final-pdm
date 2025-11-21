@@ -1,7 +1,7 @@
-import React, { useState } from 'react';
-import { View, Text, StyleSheet, SafeAreaView, StatusBar, TextInput, TouchableOpacity, Alert } from 'react-native';
-import { Stack, router } from 'expo-router';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
+import { Stack, router } from 'expo-router';
+import React, { useState } from 'react';
+import { Alert, SafeAreaView, StatusBar, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
 
 import ColorSelector from './components/budgets/ColorSelector';
 
@@ -30,7 +30,7 @@ const CreateBudgetScreen: React.FC = () => {
   };
 
   return (
-    <SafeAreaView style={styles.safeArea}>
+    <SafeAreaView style={styles.safeArea} >
       <StatusBar barStyle="dark-content" backgroundColor={COLORS.background} />
       
       <Stack.Screen 
