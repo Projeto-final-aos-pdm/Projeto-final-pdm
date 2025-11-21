@@ -3,16 +3,16 @@ import { Stack, router } from 'expo-router';
 import React, { useState } from 'react';
 import {
   SafeAreaView,
-  ScrollView,
   StatusBar,
   StyleSheet,
   Text,
   TouchableOpacity,
-  View,
+  View
 } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import AuthHeader from './components/AuthHeader';
+import { ScrollViewWithInsets } from './components/scrollViewWithInsets/ScollViewWithInset';
 import AuthInput from './components/ui/AuthInput';
 import PrimaryButton from './components/ui/PrimaryButton';
 import { COLORS } from './styles/OnboardingStyles';
@@ -37,14 +37,7 @@ const SignUpScreen: React.FC = () => {
       <StatusBar barStyle="light-content" backgroundColor={COLORS.background} />
       <Stack.Screen options={{ headerShown: false }} />
 
-      <ScrollView
-        contentContainerStyle={{
-          flexGrow: 1,
-          paddingHorizontal: 20,
-          paddingTop: insets.top + 20,     // ← respeita a StatusBar
-          paddingBottom: insets.bottom + 40, // ← respeita a navigation bar
-        }}
-        keyboardShouldPersistTaps="handled"
+      <ScrollViewWithInsets
       >
         <View style={styles.container}>
           {/* Botão voltar */}
@@ -95,7 +88,7 @@ const SignUpScreen: React.FC = () => {
             </Text>
           </View>
         </View>
-      </ScrollView>
+      </ScrollViewWithInsets>
     </SafeAreaView>
   );
 };

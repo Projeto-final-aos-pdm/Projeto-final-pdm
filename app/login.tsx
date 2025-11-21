@@ -1,16 +1,19 @@
-import React, { useState } from 'react';
-import { View, Text, StyleSheet, SafeAreaView, StatusBar, ScrollView, TouchableOpacity } from 'react-native';
-import { Stack, router } from 'expo-router';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
+import { Stack, router } from 'expo-router';
+import React, { useState } from 'react';
+import { SafeAreaView, StatusBar, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import AuthHeader from './components/AuthHeader';
+import { ScrollViewWithInsets } from './components/scrollViewWithInsets/ScollViewWithInset';
+import AuthInput from './components/ui/AuthInput';
 import PrimaryButton from './components/ui/PrimaryButton';
-import AuthInput from './components/ui/AuthInput'; 
-import AuthHeader from './components/AuthHeader'; 
-import { COLORS } from './styles/OnboardingStyles'; 
+import { COLORS } from './styles/OnboardingStyles';
 
 const LoginScreen: React.FC = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const insets = useSafeAreaInsets();
 
   const handleLogin = () => {
     if (!email || !password) {
@@ -41,7 +44,8 @@ const LoginScreen: React.FC = () => {
       <StatusBar barStyle="light-content" backgroundColor={COLORS.background} />
       <Stack.Screen options={{ headerShown: false }} /> 
       
-      <ScrollView contentContainerStyle={styles.scrollContent} keyboardShouldPersistTaps="handled">
+      <ScrollViewWithInsets
+        keyboardShouldPersistTaps="handled">
         <View style={styles.container}>
           
           <TouchableOpacity 
@@ -99,7 +103,7 @@ const LoginScreen: React.FC = () => {
           </View>
 
         </View>
-      </ScrollView>
+      </ScrollViewWithInsets>
     </SafeAreaView>
   );
 };
@@ -112,7 +116,7 @@ const styles = StyleSheet.create({
   scrollContent: {
     flexGrow: 1,
     paddingHorizontal: 20,
-    paddingTop: 10,
+    paddingTop: 20,
   },
   container: {
     flex: 1,
