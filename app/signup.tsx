@@ -1,101 +1,94 @@
-import React, { useState } from 'react';
-import { View, Text, StyleSheet, SafeAreaView, StatusBar, ScrollView, TouchableOpacity } from 'react-native';
-import { Stack, router } from 'expo-router'; 
 import { MaterialCommunityIcons } from '@expo/vector-icons';
+import { Stack, router } from 'expo-router';
+import React, { useState } from 'react';
+import {
+  SafeAreaView,
+  StatusBar,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View
+} from 'react-native';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
+import AuthHeader from './components/AuthHeader';
+import { ScrollViewWithInsets } from './components/scrollViewWithInsets/ScollViewWithInset';
+import AuthInput from './components/ui/AuthInput';
 import PrimaryButton from './components/ui/PrimaryButton';
-import AuthInput from './components/ui/AuthInput'; 
-import AuthHeader from './components/AuthHeader'; 
-import { COLORS } from './styles/OnboardingStyles'; 
+import { COLORS } from './styles/OnboardingStyles';
 
 const SignUpScreen: React.FC = () => {
+  const insets = useSafeAreaInsets(); // ← importante!
+
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
   const handleSignUp = () => {
-    if (!name || !email || !password) {
-      // alert('Por favor, preencha todos os campos.'); 
-      // return;
-    }
-    
     console.log('Dados de Registro:', { name, email, password });
-    
-    // router.replace('/home'); 
-    
-     router.push('/login'); 
+    router.push('/login');
   };
 
-  const handleLoginNavigation = () => {
-    router.push('/login'); 
-  };
-  
-  const handleBack = () => {
-      router.back();
-  }
+  const handleLoginNavigation = () => router.push('/login');
+  const handleBack = () => router.back();
 
   return (
     <SafeAreaView style={styles.safeArea}>
       <StatusBar barStyle="light-content" backgroundColor={COLORS.background} />
-      <Stack.Screen options={{ headerShown: false }} /> 
-      
-      <ScrollView contentContainerStyle={styles.scrollContent} keyboardShouldPersistTaps="handled">
+      <Stack.Screen options={{ headerShown: false }} />
+
+      <ScrollViewWithInsets
+      >
         <View style={styles.container}>
-          
-          <TouchableOpacity 
-            onPress={handleBack} 
-            style={styles.backButton}
-          >
-             <MaterialCommunityIcons name="arrow-left" size={24} color={COLORS.textPrimary} />
+          {/* Botão voltar */}
+          <TouchableOpacity onPress={handleBack} style={styles.backButton}>
+            <MaterialCommunityIcons name="arrow-left" size={24} color={COLORS.textPrimary} />
           </TouchableOpacity>
 
-          <AuthHeader 
+          {/* Cabeçalho */}
+          <AuthHeader
             title="Let's Get Started"
             subtitle="Create an account to track your expenses"
           />
 
+          {/* Formulário */}
           <View style={styles.formContainer}>
-            <AuthInput 
-              iconName="account" 
+            <AuthInput
+              iconName="account"
               placeholder="Enter your name"
               value={name}
               onChangeText={setName}
             />
-            <AuthInput 
-              iconName="email" 
+            <AuthInput
+              iconName="email"
               placeholder="Enter your email"
               keyboardType="email-address"
               value={email}
               onChangeText={setEmail}
             />
-            <AuthInput 
-              iconName="lock" 
+            <AuthInput
+              iconName="lock"
               placeholder="Enter your password"
-              secureTextEntry={true}
+              secureTextEntry
               value={password}
               onChangeText={setPassword}
             />
           </View>
-          
-          <PrimaryButton 
-            title="Sign Up" 
-            onPress={handleSignUp}
-          />
-          
+
+          {/* Botão principal */}
+          <PrimaryButton title="Sign Up" onPress={handleSignUp} />
+
+          {/* Footer com link de login */}
           <View style={styles.footer}>
             <Text style={styles.footerText}>
-              Already have an account? 
-              <Text 
-                style={styles.loginLink}
-                onPress={handleLoginNavigation}
-              >
-                {' '}Login
+              Already have an account?{' '}
+              <Text style={styles.loginLink} onPress={handleLoginNavigation}>
+                Login
               </Text>
             </Text>
           </View>
-
         </View>
-      </ScrollView>
+      </ScrollViewWithInsets>
     </SafeAreaView>
   );
 };
@@ -103,38 +96,36 @@ const SignUpScreen: React.FC = () => {
 const styles = StyleSheet.create({
   safeArea: {
     flex: 1,
-    backgroundColor: COLORS.background,
+    backgroundColor: COLORS.background, // #1C1C1E
   },
   scrollContent: {
     flexGrow: 1,
     paddingHorizontal: 20,
-    paddingTop: 10,
+    paddingTop: 20,
   },
   container: {
-    flex: 1,
     width: '100%',
-    alignItems: 'flex-start',
   },
   backButton: {
     padding: 5,
-    marginBottom: 20,
+    marginBottom: 15,
   },
   formContainer: {
     width: '100%',
-    marginBottom: 20,
+    marginVertical: 20,
   },
   footer: {
     width: '100%',
     alignItems: 'center',
-    paddingVertical: 10,
-    marginTop: 20,
+    paddingVertical: 20,
+    marginTop: 10,
   },
   footerText: {
     color: COLORS.textSecondary,
-    fontSize: 14,
+    fontSize: 15,
   },
   loginLink: {
-    color: COLORS.accent, 
+    color: COLORS.accent,
     fontWeight: 'bold',
   },
 });

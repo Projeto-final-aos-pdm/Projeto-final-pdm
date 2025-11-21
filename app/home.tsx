@@ -1,15 +1,21 @@
-import React from 'react';
-import { 
-    View, Text, StyleSheet, SafeAreaView, 
-    StatusBar, FlatList, TouchableOpacity, 
-    ListRenderItem 
-} from 'react-native';
+import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { Stack, router } from 'expo-router';
-import { MaterialCommunityIcons } from '@expo/vector-icons'; 
+import React from 'react';
+import {
+  FlatList,
+  ListRenderItem,
+  SafeAreaView,
+  StatusBar,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View
+} from 'react-native';
 
-import DashboardHeader from './components/DashboardHeader'; 
-import TransactionListItem from './components/TransactionListItem'; 
-import { COLORS } from './styles/OnboardingStyles'; 
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import DashboardHeader from './components/DashboardHeader';
+import TransactionListItem from './components/TransactionListItem';
+import { COLORS } from './styles/OnboardingStyles';
 
 type TransactionData = {
   id: string;
@@ -51,12 +57,19 @@ const HomeScreen: React.FC = () => {
     />
   );
 
+  const insets = useSafeAreaInsets(); // ← pega os espaçamentos seguros
   return (
+    
     <SafeAreaView style={styles.safeArea}>
       <StatusBar barStyle="light-content" backgroundColor={COLORS.background} />
       <Stack.Screen options={{ headerShown: false }} /> 
       
       <FlatList 
+        contentContainerStyle={{
+            paddingHorizontal: 20,
+            paddingTop: insets.top + 10,     // respeita a StatusBar
+            paddingBottom: insets.bottom + 100, // dá espaço pro FAB e navigation bar
+          }}
         ListHeaderComponent={() => (
           <View style={styles.headerComponent}>
             <DashboardHeader 
@@ -71,7 +84,6 @@ const HomeScreen: React.FC = () => {
         data={DUMMY_TRANSACTIONS}
         renderItem={renderItem}
         keyExtractor={(item: TransactionData) => item.id}
-        contentContainerStyle={styles.listContent}
         showsVerticalScrollIndicator={false}
       />
       
@@ -109,7 +121,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     right: 25,
-    bottom: 25,
+    bottom: 45,
     backgroundColor: COLORS.accent,
     borderRadius: 30,
     shadowColor: '#000',

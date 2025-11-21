@@ -1,8 +1,9 @@
-import React, { useState } from 'react';
-import { View, Text, StyleSheet, SafeAreaView, StatusBar, TextInput, TouchableOpacity, ScrollView } from 'react-native';
-import { Stack, router } from 'expo-router';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
+import { Stack, router } from 'expo-router';
+import React, { useState } from 'react';
+import { SafeAreaView, StatusBar, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
 
+import { ScrollViewWithInsets } from './components/scrollViewWithInsets/ScollViewWithInset';
 import PrimaryButton from './components/ui/PrimaryButton';
 import TypeSwitcher from './components/ui/TypeSwitcher';
 import { COLORS } from './styles/OnboardingStyles';
@@ -39,7 +40,7 @@ const AddTransactionScreen: React.FC = () => {
         }} 
       />
 
-      <ScrollView contentContainerStyle={styles.content}>
+      <ScrollViewWithInsets contentContainerStyle={styles.content}>
         
         {/* Seletor de Tipo */}
         <TypeSwitcher selectedType={type} onSelect={setType} />
@@ -88,7 +89,6 @@ const AddTransactionScreen: React.FC = () => {
           </TouchableOpacity>
         </View>
 
-      </ScrollView>
 
       {/* Botão Salvar Fixo no Fundo */}
       <View style={styles.footer}>
@@ -99,6 +99,8 @@ const AddTransactionScreen: React.FC = () => {
           textStyle={{ color: COLORS.background }}
         />
       </View>
+      </ScrollViewWithInsets>
+
 
     </SafeAreaView>
   );
