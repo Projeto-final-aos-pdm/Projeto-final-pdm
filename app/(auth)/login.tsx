@@ -1,18 +1,24 @@
-import { MaterialCommunityIcons } from '@expo/vector-icons';
-import { Stack, router } from 'expo-router';
-import React, { useState } from 'react';
-import { SafeAreaView, StatusBar, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { Stack, router } from "expo-router";
+import React, { useState } from "react";
+import {
+  SafeAreaView,
+  StatusBar,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+} from "react-native";
 
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import AuthHeader from './components/AuthHeader';
-import { ScrollViewWithInsets } from './components/scrollViewWithInsets/ScollViewWithInset';
-import AuthInput from './components/ui/AuthInput';
-import PrimaryButton from './components/ui/PrimaryButton';
-import { COLORS } from './styles/OnboardingStyles';
+import { useSafeAreaInsets } from "react-native-safe-area-context";
+import AuthHeader from "../components/AuthHeader";
+import { ScrollViewWithInsets } from "../components/scrollViewWithInsets/ScollViewWithInset";
+import AuthInput from "../components/ui/AuthInput";
+import PrimaryButton from "../components/ui/PrimaryButton";
+import { COLORS } from "../styles/OnboardingStyles";
 
 const LoginScreen: React.FC = () => {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
   const insets = useSafeAreaInsets();
 
   const handleLogin = () => {
@@ -20,88 +26,76 @@ const LoginScreen: React.FC = () => {
       // alert('Por favor, preencha o e-mail e a senha.');
       // return;
     }
-    
-    console.log('Tentativa de Login:', { email, password });
-    
-    router.replace('/home'); 
+
+    console.log("Tentativa de Login:", { email, password });
+
+    router.replace("/home");
   };
 
   const handleSignUpNavigation = () => {
-    router.push('/signup'); 
+    router.push("/signup");
   };
 
   const handleForgotPassword = () => {
     console.log("Navegar para Esqueci a Senha");
-    // router.push('/forgot-password'); 
+    // router.push('/forgot-password');
   };
-  
+
   const handleGoBack = () => {
-      router.back();
-  }
+    router.back();
+  };
 
   return (
     <SafeAreaView style={styles.safeArea}>
       <StatusBar barStyle="light-content" backgroundColor={COLORS.background} />
-      <Stack.Screen options={{ headerShown: false }} /> 
-      
-      <ScrollViewWithInsets
-        keyboardShouldPersistTaps="handled">
-        <View style={styles.container}>
-          
-          <TouchableOpacity 
-            onPress={handleGoBack}
-            style={styles.backButton}
-          >
-             <MaterialCommunityIcons name="arrow-left" size={24} color={COLORS.textPrimary} />
-          </TouchableOpacity>
+      <Stack.Screen options={{ headerShown: false }} />
 
-          <AuthHeader 
+      <ScrollViewWithInsets keyboardShouldPersistTaps="handled">
+        <View style={styles.container}>
+          <AuthHeader
             title="Hey, Welcome Back"
             subtitle="Login now to track all your expenses"
           />
 
           <View style={styles.formContainer}>
-            <AuthInput 
-              iconName="email" 
+            <AuthInput
+              iconName="email"
               placeholder="Enter your email"
               keyboardType="email-address"
               value={email}
               onChangeText={setEmail}
             />
-            <AuthInput 
-              iconName="lock" 
+            <AuthInput
+              iconName="lock"
               placeholder="Enter your password"
               secureTextEntry={true}
               value={password}
               onChangeText={setPassword}
             />
           </View>
-          
-          <TouchableOpacity 
+
+          <TouchableOpacity
             onPress={handleForgotPassword}
             style={styles.forgotPasswordContainer}
           >
             <Text style={styles.forgotPasswordText}>Forgot Password?</Text>
           </TouchableOpacity>
 
-          <PrimaryButton 
-            title="Login" 
+          <PrimaryButton
+            title="Login"
             onPress={handleLogin}
             style={styles.loginButton}
           />
-          
+
           <View style={styles.footer}>
             <Text style={styles.footerText}>
-              Don't have an account? 
-              <Text 
-                style={styles.signUpLink}
-                onPress={handleSignUpNavigation}
-              >
-                {' '}Sign up
+              Don't have an account?
+              <Text style={styles.signUpLink} onPress={handleSignUpNavigation}>
+                {" "}
+                Sign up
               </Text>
             </Text>
           </View>
-
         </View>
       </ScrollViewWithInsets>
     </SafeAreaView>
@@ -120,21 +114,22 @@ const styles = StyleSheet.create({
   },
   container: {
     flex: 1,
-    width: '100%',
-    alignItems: 'flex-start',
+    width: "100%",
+    alignItems: "flex-start",
+    justifyContent: "center",
   },
   backButton: {
     padding: 5,
     marginBottom: 20,
   },
   formContainer: {
-    width: '100%',
+    width: "100%",
     marginBottom: 10,
   },
   forgotPasswordContainer: {
-    width: '100%',
-    alignItems: 'flex-end',
-    marginBottom: 30, 
+    width: "100%",
+    alignItems: "flex-end",
+    marginBottom: 30,
   },
   forgotPasswordText: {
     color: COLORS.textSecondary,
@@ -145,8 +140,8 @@ const styles = StyleSheet.create({
     marginBottom: 20,
   },
   footer: {
-    width: '100%',
-    alignItems: 'center',
+    width: "100%",
+    alignItems: "center",
     paddingVertical: 10,
   },
   footerText: {
@@ -154,8 +149,8 @@ const styles = StyleSheet.create({
     fontSize: 14,
   },
   signUpLink: {
-    color: COLORS.accent, 
-    fontWeight: 'bold',
+    color: COLORS.accent,
+    fontWeight: "bold",
   },
 });
 

@@ -1,35 +1,35 @@
-import { MaterialCommunityIcons } from '@expo/vector-icons';
-import { Stack, router } from 'expo-router';
-import React, { useState } from 'react';
+import { MaterialCommunityIcons } from "@expo/vector-icons";
+import { Stack, router } from "expo-router";
+import React, { useState } from "react";
 import {
   SafeAreaView,
   StatusBar,
   StyleSheet,
   Text,
   TouchableOpacity,
-  View
-} from 'react-native';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
+  View,
+} from "react-native";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
 
-import AuthHeader from './components/AuthHeader';
-import { ScrollViewWithInsets } from './components/scrollViewWithInsets/ScollViewWithInset';
-import AuthInput from './components/ui/AuthInput';
-import PrimaryButton from './components/ui/PrimaryButton';
-import { COLORS } from './styles/OnboardingStyles';
+import AuthHeader from "../components/AuthHeader";
+import { ScrollViewWithInsets } from "../components/scrollViewWithInsets/ScollViewWithInset";
+import AuthInput from "../components/ui/AuthInput";
+import PrimaryButton from "../components/ui/PrimaryButton";
+import { COLORS } from "../styles/OnboardingStyles";
 
 const SignUpScreen: React.FC = () => {
   const insets = useSafeAreaInsets(); // ← importante!
 
-  const [name, setName] = useState('');
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
 
   const handleSignUp = () => {
-    console.log('Dados de Registro:', { name, email, password });
-    router.push('/login');
+    console.log("Dados de Registro:", { name, email, password });
+    router.push("/login");
   };
 
-  const handleLoginNavigation = () => router.push('/login');
+  const handleLoginNavigation = () => router.push("/login");
   const handleBack = () => router.back();
 
   return (
@@ -37,14 +37,16 @@ const SignUpScreen: React.FC = () => {
       <StatusBar barStyle="light-content" backgroundColor={COLORS.background} />
       <Stack.Screen options={{ headerShown: false }} />
 
-      <ScrollViewWithInsets
-      >
+      <ScrollViewWithInsets>
+        {/* Botão voltar */}
+        <TouchableOpacity onPress={handleBack} style={styles.backButton}>
+          <MaterialCommunityIcons
+            name="arrow-left"
+            size={24}
+            color={COLORS.textPrimary}
+          />
+        </TouchableOpacity>
         <View style={styles.container}>
-          {/* Botão voltar */}
-          <TouchableOpacity onPress={handleBack} style={styles.backButton}>
-            <MaterialCommunityIcons name="arrow-left" size={24} color={COLORS.textPrimary} />
-          </TouchableOpacity>
-
           {/* Cabeçalho */}
           <AuthHeader
             title="Let's Get Started"
@@ -81,7 +83,7 @@ const SignUpScreen: React.FC = () => {
           {/* Footer com link de login */}
           <View style={styles.footer}>
             <Text style={styles.footerText}>
-              Already have an account?{' '}
+              Already have an account?{" "}
               <Text style={styles.loginLink} onPress={handleLoginNavigation}>
                 Login
               </Text>
@@ -104,19 +106,22 @@ const styles = StyleSheet.create({
     paddingTop: 20,
   },
   container: {
-    width: '100%',
+    width: "100%",
+    flex: 1,
+    alignItems: "flex-start",
+    justifyContent: "center",
   },
   backButton: {
     padding: 5,
     marginBottom: 15,
   },
   formContainer: {
-    width: '100%',
+    width: "100%",
     marginVertical: 20,
   },
   footer: {
-    width: '100%',
-    alignItems: 'center',
+    width: "100%",
+    alignItems: "center",
     paddingVertical: 20,
     marginTop: 10,
   },
@@ -126,7 +131,7 @@ const styles = StyleSheet.create({
   },
   loginLink: {
     color: COLORS.accent,
-    fontWeight: 'bold',
+    fontWeight: "bold",
   },
 });
 
