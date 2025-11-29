@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, StyleSheet, Image } from 'react-native';
+import { View, Text, StyleSheet, Image, TouchableOpacity, Alert } from 'react-native';
 import { COLORS } from '../../styles/OnboardingStyles'; 
 
 const AVATAR_URL = 'https://example.com/avatar.png';
@@ -11,13 +11,15 @@ interface ProfileHeaderProps {
 }
 
 const ProfileHeader: React.FC<ProfileHeaderProps> = ({ name, email, avatarUrl }) => {
+
+
   return (
     <View style={styles.container}>
-      <Image 
-        source={{ uri: avatarUrl || AVATAR_URL }} 
-        style={styles.avatar} 
-      />
-      <Text style={styles.name}>{name}</Text>
+        <Image 
+          source={{ uri: avatarUrl || AVATAR_URL }} 
+          style={styles.avatar} 
+        />
+      <Text style={styles.name}>{name} aaaaaaaaaaaa</Text>
       <Text style={styles.email}>{email}</Text>
     </View>
   );

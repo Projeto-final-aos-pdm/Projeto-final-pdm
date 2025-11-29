@@ -20,7 +20,7 @@ const USER_DATA = {
 
 const ProfileScreen: React.FC = () => {
   const handleEditProfile = () => {
-    console.log("Navegar para Editar Perfil");
+    router.push("/edit-profile")
   };
 
   const handleLogout = () => {
