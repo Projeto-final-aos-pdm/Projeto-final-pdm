@@ -69,7 +69,7 @@ const BudgetDetailScreen: React.FC = () => {
           <Text style={styles.listTitle}>Item List</Text>
 
           {/* Lista de Itens */}
-          <BudgetItemList items={budgetData.items} />
+          <BudgetItemList item={budgetData.items} />
         </ScrollView>
 
         {/* Botão Flutuante (FAB) */}

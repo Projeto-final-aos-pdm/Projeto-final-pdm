@@ -1,6 +1,7 @@
 import { Stack, router } from "expo-router";
 import React, { useState } from "react";
 import {
+  Alert,
   SafeAreaView,
   StatusBar,
   StyleSheet,
@@ -9,27 +10,37 @@ import {
   View,
 } from "react-native";
 
-import { useSafeAreaInsets } from "react-native-safe-area-context";
 import AuthHeader from "../components/AuthHeader";
 import { ScrollViewWithInsets } from "../components/scrollViewWithInsets/ScollViewWithInset";
 import AuthInput from "../components/ui/AuthInput";
 import PrimaryButton from "../components/ui/PrimaryButton";
+import { login } from "../service/authentication";
 import { COLORS } from "../styles/OnboardingStyles";
+import { useStore } from "../zustand/storage";
 
 const LoginScreen: React.FC = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const insets = useSafeAreaInsets();
+  const setToken = useStore((state: any) => state.setToken);
+  const getToken = useStore((state: any) => state.isToken);
 
-  const handleLogin = () => {
-    if (!email || !password) {
-      // alert('Por favor, preencha o e-mail e a senha.');
-      // return;
+  const handleLogin = async () => {
+    try {
+      if (!email || !password) {
+        Alert.alert("Erro", "Por favor, preencher os campos corretamente!!");
+        return;
+      }
+
+      const loginData = await login(email, password);
+
+      setToken(loginData.token);
+      console.log("Token guardado no zustand: " + getToken);
+
+      router.replace("/home");
+    } catch (error) {
+      console.log(error);
+      Alert.alert("Erro", "Email ou senha inválido");
     }
-
-    console.log("Tentativa de Login:", { email, password });
-
-    router.replace("/home");
   };
 
   const handleSignUpNavigation = () => {
@@ -39,10 +50,6 @@ const LoginScreen: React.FC = () => {
   const handleForgotPassword = () => {
     console.log("Navegar para Esqueci a Senha");
     // router.push('/forgot-password');
-  };
-
-  const handleGoBack = () => {
-    router.back();
   };
 
   return (
