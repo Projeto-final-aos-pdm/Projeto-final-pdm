@@ -2,21 +2,21 @@ import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { Stack, router } from "expo-router";
 import React, { useState } from "react";
 import {
-  Alert,
-  SafeAreaView,
-  StatusBar,
-  StyleSheet,
-  Text,
-  TouchableOpacity,
-  View,
+    Alert,
+    SafeAreaView,
+    StatusBar,
+    StyleSheet,
+    Text,
+    TouchableOpacity,
+    View,
 } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
+import { ScrollViewWithInsets } from "../../src/components/ScrollViewWithInset";
+import { signup } from "../../src/services/authentication";
 import AuthHeader from "../components/AuthHeader";
-import { ScrollViewWithInsets } from "../components/scrollViewWithInsets/ScollViewWithInset";
 import AuthInput from "../components/ui/AuthInput";
 import PrimaryButton from "../components/ui/PrimaryButton";
-import { singup } from "../service/authentication";
 import { COLORS } from "../styles/OnboardingStyles";
 
 const SignUpScreen: React.FC = () => {
@@ -33,7 +33,7 @@ const SignUpScreen: React.FC = () => {
         return;
       }
 
-      await singup(name, email, password);
+      await signup(name, email, password);
       router.push("/login");
     } catch (error) {
       Alert.alert("Erro", "Dados inválidos inválido");
