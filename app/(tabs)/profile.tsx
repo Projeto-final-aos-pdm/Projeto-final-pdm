@@ -9,11 +9,11 @@ import {
   View,
 } from "react-native";
 
+import { logout } from "../../src/services/authentication";
+import { useStore } from "../../src/store/storage";
 import ProfileHeader from "../components/profile/ProfileHeader";
 import ProfileListItem from "../components/profile/ProfileListItem";
-import { logout } from "../service/authentication";
 import { COLORS } from "../styles/OnboardingStyles";
-import { useStore } from "../zustand/storage";
 
 const USER_DATA = {
   name: "Syed Noman",
@@ -23,6 +23,7 @@ const USER_DATA = {
 
 const ProfileScreen: React.FC = () => {
   const token = useStore((state: any) => state.isToken);
+  const clearToken = useStore((state: any) => state.clearToken);
 
   const handleConfirmLogout = () => {
     Alert.alert(
@@ -31,16 +32,11 @@ const ProfileScreen: React.FC = () => {
       [
         {
           text: "Não",
-          onPress: () => {
-            console.log("Cancelado");
-          },
+          onPress: () => {},
         },
         {
           text: "Sim",
-          onPress: () => {
-            console.log("Confirmado");
-            handleLogout();
-          },
+          onPress: handleLogout,
         },
       ],
       { cancelable: true }
@@ -54,11 +50,12 @@ const ProfileScreen: React.FC = () => {
   const handleLogout = async () => {
     try {
       await logout(token);
-      console.log("Logout efetuado");
-
+      clearToken();
       router.replace("/login");
     } catch (error) {
-      console.log(error);
+      // Clear token locally even if backend request fails
+      clearToken();
+      router.replace("/login");
     }
   };
 
@@ -77,14 +74,12 @@ const ProfileScreen: React.FC = () => {
       />
 
       <ScrollView contentContainerStyle={styles.scrollContent}>
-        {/* Cabeçalho com Avatar */}
         <ProfileHeader
           name={USER_DATA.name}
           email={USER_DATA.email}
           avatarUrl={USER_DATA.avatarUrl}
         />
 
-        {/* Lista de Opções */}
         <View style={styles.menuContainer}>
           <ProfileListItem
             icon="account-edit"
