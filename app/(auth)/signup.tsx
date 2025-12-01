@@ -2,6 +2,7 @@ import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { Stack, router } from "expo-router";
 import React, { useState } from "react";
 import {
+  Alert,
   SafeAreaView,
   StatusBar,
   StyleSheet,
@@ -15,6 +16,7 @@ import AuthHeader from "../components/AuthHeader";
 import { ScrollViewWithInsets } from "../components/scrollViewWithInsets/ScollViewWithInset";
 import AuthInput from "../components/ui/AuthInput";
 import PrimaryButton from "../components/ui/PrimaryButton";
+import { singup } from "../service/authentication";
 import { COLORS } from "../styles/OnboardingStyles";
 
 const SignUpScreen: React.FC = () => {
@@ -24,9 +26,18 @@ const SignUpScreen: React.FC = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
-  const handleSignUp = () => {
-    console.log("Dados de Registro:", { name, email, password });
-    router.push("/login");
+  const handleSignUp = async () => {
+    try {
+      if (!email || !name || !password) {
+        Alert.alert("Erro", "Por favor, preencher os campos corretamente!!");
+        return;
+      }
+
+      await singup(name, email, password);
+      router.push("/login");
+    } catch (error) {
+      Alert.alert("Erro", "Dados inválidos inválido");
+    }
   };
 
   const handleLoginNavigation = () => router.push("/login");

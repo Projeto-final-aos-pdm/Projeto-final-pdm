@@ -1,6 +1,7 @@
 import { Stack, router } from "expo-router";
 import React from "react";
 import {
+  Alert,
   SafeAreaView,
   ScrollView,
   StatusBar,
@@ -10,7 +11,9 @@ import {
 
 import ProfileHeader from "../components/profile/ProfileHeader";
 import ProfileListItem from "../components/profile/ProfileListItem";
+import { logout } from "../service/authentication";
 import { COLORS } from "../styles/OnboardingStyles";
+import { useStore } from "../zustand/storage";
 
 const USER_DATA = {
   name: "Syed Noman",
@@ -19,13 +22,44 @@ const USER_DATA = {
 };
 
 const ProfileScreen: React.FC = () => {
-  const handleEditProfile = () => {
-    router.push("/edit-profile")
+  const token = useStore((state: any) => state.isToken);
+
+  const handleConfirmLogout = () => {
+    Alert.alert(
+      "Confirmar ação",
+      "Você realmente deseja sair da sua conta?",
+      [
+        {
+          text: "Não",
+          onPress: () => {
+            console.log("Cancelado");
+          },
+        },
+        {
+          text: "Sim",
+          onPress: () => {
+            console.log("Confirmado");
+            handleLogout();
+          },
+        },
+      ],
+      { cancelable: true }
+    );
   };
 
-  const handleLogout = () => {
-    console.log("Executar Logout");
-    router.replace("/login");
+  const handleEditProfile = () => {
+    router.push("/edit-profile");
+  };
+
+  const handleLogout = async () => {
+    try {
+      await logout(token);
+      console.log("Logout efetuado");
+
+      router.replace("/login");
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   return (
@@ -74,7 +108,7 @@ const ProfileScreen: React.FC = () => {
             icon="logout"
             iconColor={COLORS.expense}
             text="Logout"
-            onPress={handleLogout}
+            onPress={handleConfirmLogout}
           />
         </View>
       </ScrollView>
