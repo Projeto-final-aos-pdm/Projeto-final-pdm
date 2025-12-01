@@ -1,42 +1,55 @@
-import React, { useState, useEffect } from 'react';
-import { View, Text, StyleSheet, SafeAreaView, StatusBar, TextInput, TouchableOpacity, Alert } from 'react-native';
-import { Stack, router, useLocalSearchParams } from 'expo-router';
-import { MaterialCommunityIcons } from '@expo/vector-icons';
+import { MaterialCommunityIcons } from "@expo/vector-icons";
+import { Stack, router, useLocalSearchParams } from "expo-router";
+import React, { useEffect, useState } from "react";
+import {
+  Alert,
+  SafeAreaView,
+  StatusBar,
+  StyleSheet,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  View,
+} from "react-native";
 
-import PrimaryButton from './components/ui/PrimaryButton';
-import IconSelector from './components/wallet/IconSelector';
-import { COLORS } from './styles/OnboardingStyles';
+import PrimaryButton from "../components/ui/PrimaryButton";
+import IconSelector from "../components/wallet/IconSelector";
+import { COLORS } from "../styles/OnboardingStyles";
 
 const AddWalletScreen: React.FC = () => {
   const { id } = useLocalSearchParams<{ id: string }>();
   const isEditing = !!id;
 
-  const [name, setName] = useState('');
-  const [balance, setBalance] = useState('');
-  const [selectedIcon, setSelectedIcon] = useState('wallet');
+  const [name, setName] = useState("");
+  const [balance, setBalance] = useState("");
+  const [selectedIcon, setSelectedIcon] = useState("wallet");
 
   useEffect(() => {
     if (isEditing) {
-      setName('Side hustle'); 
-      setBalance('70.00');    
-      setSelectedIcon('piggy-bank'); 
+      setName("Side hustle");
+      setBalance("70.00");
+      setSelectedIcon("piggy-bank");
     }
   }, [id]);
 
   const handleSave = () => {
     if (!name) {
-      Alert.alert('Error', 'Please enter a wallet name');
+      Alert.alert("Error", "Please enter a wallet name");
       return;
     }
-    
-    const payload = { name, balance: parseFloat(balance) || 0, icon: selectedIcon };
+
+    const payload = {
+      name,
+      balance: parseFloat(balance) || 0,
+      icon: selectedIcon,
+    };
 
     if (isEditing) {
-      console.log('Atualizar Carteira:', id, payload);
+      console.log("Atualizar Carteira:", id, payload);
     } else {
-      console.log('Criar Carteira:', payload);
+      console.log("Criar Carteira:", payload);
     }
-    
+
     router.back();
   };
 
@@ -46,14 +59,14 @@ const AddWalletScreen: React.FC = () => {
       "Are you sure you want to delete this wallet?",
       [
         { text: "Cancel", style: "cancel" },
-        { 
-          text: "Delete", 
-          style: "destructive", 
+        {
+          text: "Delete",
+          style: "destructive",
           onPress: () => {
-            console.log('Deletar Carteira:', id);
+            console.log("Deletar Carteira:", id);
             router.back();
-          }
-        }
+          },
+        },
       ]
     );
   };
@@ -61,20 +74,19 @@ const AddWalletScreen: React.FC = () => {
   return (
     <SafeAreaView style={styles.safeArea}>
       <StatusBar barStyle="light-content" backgroundColor={COLORS.background} />
-      
-      <Stack.Screen 
+
+      <Stack.Screen
         options={{
           headerShown: true,
-          headerTitle: isEditing ? 'Update Wallet' : 'New Wallet',
+          headerTitle: isEditing ? "Update Wallet" : "New Wallet",
           headerStyle: { backgroundColor: COLORS.background },
           headerTintColor: COLORS.textPrimary,
           headerShadowVisible: false,
           headerBackTitle: "",
-        }} 
+        }}
       />
 
       <View style={styles.content}>
-        
         {/* Input Nome */}
         <View style={styles.inputGroup}>
           <Text style={styles.label}>Wallet Name</Text>
@@ -104,7 +116,6 @@ const AddWalletScreen: React.FC = () => {
 
         {/* Seletor de Ícone */}
         <IconSelector selectedIcon={selectedIcon} onSelect={setSelectedIcon} />
-
       </View>
 
       {/* Footer com Botões */}
@@ -112,19 +123,22 @@ const AddWalletScreen: React.FC = () => {
         {/* Botão de Deletar (Só aparece na edição) */}
         {isEditing && (
           <TouchableOpacity style={styles.deleteButton} onPress={handleDelete}>
-            <MaterialCommunityIcons name="trash-can-outline" size={28} color={COLORS.textPrimary} />
+            <MaterialCommunityIcons
+              name="trash-can-outline"
+              size={28}
+              color={COLORS.textPrimary}
+            />
           </TouchableOpacity>
         )}
 
         {/* Botão de Salvar */}
         <View style={{ flex: 1, marginLeft: isEditing ? 15 : 0 }}>
-            <PrimaryButton 
-                title={isEditing ? 'Update Wallet' : 'Add Wallet'} 
-                onPress={handleSave} 
-            />
+          <PrimaryButton
+            title={isEditing ? "Update Wallet" : "Add Wallet"}
+            onPress={handleSave}
+          />
         </View>
       </View>
-
     </SafeAreaView>
   );
 };
@@ -145,31 +159,31 @@ const styles = StyleSheet.create({
     color: COLORS.textSecondary,
     fontSize: 14,
     marginBottom: 10,
-    fontWeight: '500',
+    fontWeight: "500",
   },
   textInput: {
-    backgroundColor: '#2C2C2E',
+    backgroundColor: "#2C2C2E",
     borderRadius: 12,
     paddingHorizontal: 15,
     height: 55,
     fontSize: 16,
     color: COLORS.textPrimary,
   },
-  
+
   // Footer
   footer: {
     padding: 20,
     paddingBottom: 30,
-    flexDirection: 'row',
-    alignItems: 'center',
+    flexDirection: "row",
+    alignItems: "center",
   },
   deleteButton: {
     width: 55,
     height: 55,
-    backgroundColor: '#FF3B30', 
+    backgroundColor: "#FF3B30",
     borderRadius: 12,
-    justifyContent: 'center',
-    alignItems: 'center',
+    justifyContent: "center",
+    alignItems: "center",
   },
 });
 

@@ -2,6 +2,7 @@ import React from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, ViewStyle, TextStyle } from 'react-native';
 import { MaterialCommunityIcons } from '@expo/vector-icons'; 
 import { COLORS as GlobalColors } from '../styles/OnboardingStyles';
+import { useRouter } from 'expo-router';
 
 interface DashboardHeaderProps {
   userName: string;
@@ -25,9 +26,10 @@ const DashboardHeader: React.FC<DashboardHeaderProps> = ({
   totalIncome, 
   totalExpense 
 }) => {
-
-  const handleNotifications = () => console.log("Ver Notificações");
-  const handleAccountSettings = () => console.log("Abrir Configurações");
+  const router = useRouter()
+  // Caso seja implementado 
+  // const handleNotifications = () => router.push("/");
+  const handleAccountSettings = () => router.push("/profile");
 
   return (
     <View style={styles.container}>
@@ -38,14 +40,14 @@ const DashboardHeader: React.FC<DashboardHeaderProps> = ({
           <Text style={styles.userName}>{userName}</Text>
         </View>
         <View style={styles.iconGroup}>
-          <TouchableOpacity onPress={handleNotifications}>
+          {/* <TouchableOpacity onPress={handleNotifications}>
             <MaterialCommunityIcons 
               name="bell-outline" 
               size={24} 
               color={COLORS.textLight} 
               style={styles.iconSpacing}
             />
-          </TouchableOpacity>
+          </TouchableOpacity> */}
           <TouchableOpacity onPress={handleAccountSettings}>
             <MaterialCommunityIcons 
               name="account-circle-outline" 
