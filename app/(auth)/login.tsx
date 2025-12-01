@@ -1,22 +1,22 @@
 import { Stack, router } from "expo-router";
 import React, { useState } from "react";
 import {
-  Alert,
-  SafeAreaView,
-  StatusBar,
-  StyleSheet,
-  Text,
-  TouchableOpacity,
-  View,
+    Alert,
+    SafeAreaView,
+    StatusBar,
+    StyleSheet,
+    Text,
+    TouchableOpacity,
+    View,
 } from "react-native";
 
+import { ScrollViewWithInsets } from "../../src/components/ScrollViewWithInset";
+import { login } from "../../src/services/authentication";
+import { useStore } from "../../src/store/storage";
 import AuthHeader from "../components/AuthHeader";
-import { ScrollViewWithInsets } from "../components/scrollViewWithInsets/ScollViewWithInset";
 import AuthInput from "../components/ui/AuthInput";
 import PrimaryButton from "../components/ui/PrimaryButton";
-import { login } from "../service/authentication";
 import { COLORS } from "../styles/OnboardingStyles";
-import { useStore } from "../zustand/storage";
 
 const LoginScreen: React.FC = () => {
   const [email, setEmail] = useState("");

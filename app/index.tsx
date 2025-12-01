@@ -1,16 +1,20 @@
-import { Link } from "expo-router";
+import { router } from "expo-router";
 import React from "react";
 import { StatusBar, StyleSheet, View } from "react-native";
 import {
-  SafeAreaView,
-  useSafeAreaInsets,
+    SafeAreaView,
+    useSafeAreaInsets,
 } from "react-native-safe-area-context";
 
-import OnboardingContent from "../components/OnboardingContent";
-import PrimaryButton from "../components/ui/PrimaryButton";
+import OnboardingContent from "./components/OnboardingContent";
+import PrimaryButton from "./components/ui/PrimaryButton";
 
 const OnboardingScreen = () => {
   const insets = useSafeAreaInsets();
+
+  const handleGetStarted = () => {
+    router.push("/(auth)/signup");
+  };
 
   return (
     <SafeAreaView
@@ -22,9 +26,7 @@ const OnboardingScreen = () => {
       <View style={styles.innerContainer}>
         <OnboardingContent />
 
-        <Link href="/signup" asChild>
-          <PrimaryButton title="Get Started" onPress={() => {}} />
-        </Link>
+        <PrimaryButton title="Get Started" onPress={handleGetStarted} />
       </View>
     </SafeAreaView>
   );
