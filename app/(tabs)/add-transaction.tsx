@@ -2,16 +2,16 @@ import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { Stack, router } from "expo-router";
 import React, { useState } from "react";
 import {
-  SafeAreaView,
-  StatusBar,
-  StyleSheet,
-  Text,
-  TextInput,
-  TouchableOpacity,
-  View,
+    SafeAreaView,
+    StatusBar,
+    StyleSheet,
+    Text,
+    TextInput,
+    TouchableOpacity,
+    View,
 } from "react-native";
 
-import { ScrollViewWithInsets } from "../components/scrollViewWithInsets/ScollViewWithInset";
+import { ScrollViewWithInsets } from "../../src/components/ScrollViewWithInset";
 import PrimaryButton from "../components/ui/PrimaryButton";
 import TypeSwitcher from "../components/ui/TypeSwitcher";
 import { COLORS } from "../styles/OnboardingStyles";

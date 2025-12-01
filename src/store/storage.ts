@@ -17,6 +17,9 @@ export const useStore = create<StoreState>()(
       getToken: () => get().isToken,
       clearToken: () => set({ isToken: "" }),
     }),
-    { name: "token-storage", storage: createJSONStorage(() => AsyncStorage) }
+    {
+      name: "token-storage",
+      storage: createJSONStorage(() => AsyncStorage),
+    }
   )
 );
