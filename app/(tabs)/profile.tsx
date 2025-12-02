@@ -1,5 +1,5 @@
-import { Stack, router } from "expo-router";
-import React, { useEffect, useState } from "react";
+import { Stack, router, useFocusEffect } from "expo-router";
+import React, { useCallback, useState } from "react";
 import {
   Alert,
   SafeAreaView,
@@ -16,11 +16,6 @@ import { useStore } from "../../src/store/storage";
 import ProfileHeader from "../components/profile/ProfileHeader";
 import ProfileListItem from "../components/profile/ProfileListItem";
 import { COLORS } from "../styles/OnboardingStyles";
-// const USER_DATA = {
-//   name: "Syed Noman",
-//   email: "syed@mail.com",
-//   avatarUrl: ,
-// };
 
 const ProfileScreen: React.FC = () => {
   const [userData, setUserData] = useState<User>();
@@ -61,17 +56,20 @@ const ProfileScreen: React.FC = () => {
     }
   };
 
-  useEffect(() => {
-    async function load() {
-      try {
-        const data = await getUserData();
-        setUserData(data);
-      } catch (error) {
-        console.log(error);
+  useFocusEffect(
+    useCallback(() => {
+      async function load() {
+        try {
+          const data = await getUserData();
+          setUserData(data);
+        } catch (error) {
+          console.log(error);
+        }
       }
-    }
-    load();
-  }, []);
+
+      load();
+    }, [])
+  );
 
   return (
     <SafeAreaView style={styles.safeArea}>

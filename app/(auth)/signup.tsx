@@ -2,13 +2,13 @@ import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { Stack, router } from "expo-router";
 import React, { useState } from "react";
 import {
-    Alert,
-    SafeAreaView,
-    StatusBar,
-    StyleSheet,
-    Text,
-    TouchableOpacity,
-    View,
+  Alert,
+  SafeAreaView,
+  StatusBar,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
 } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
@@ -21,6 +21,7 @@ import { COLORS } from "../styles/OnboardingStyles";
 
 const SignUpScreen: React.FC = () => {
   const insets = useSafeAreaInsets(); // ← importante!
+  const [loading, setLoading] = useState(false);
 
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
@@ -32,11 +33,12 @@ const SignUpScreen: React.FC = () => {
         Alert.alert("Erro", "Por favor, preencher os campos corretamente!!");
         return;
       }
-
+      setLoading(true);
       await signup(name, email, password);
       router.push("/login");
     } catch (error) {
       Alert.alert("Erro", "Dados inválidos inválido");
+      setLoading(false);
     }
   };
 
@@ -89,7 +91,11 @@ const SignUpScreen: React.FC = () => {
           </View>
 
           {/* Botão principal */}
-          <PrimaryButton title="Sign Up" onPress={handleSignUp} />
+          <PrimaryButton
+            title="Sign Up"
+            onPress={handleSignUp}
+            disabled={loading}
+          />
 
           {/* Footer com link de login */}
           <View style={styles.footer}>

@@ -18,3 +18,8 @@ export type UserResponse = {
     updated_at: string;
   };
 };
+
+export type UserRequestUpdate = {
+  name?: string;
+  email?: string;
+};
