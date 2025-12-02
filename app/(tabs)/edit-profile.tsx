@@ -43,10 +43,24 @@ export default function EditProfileScreen() {
     <SafeAreaView style={styles.safeArea}>
       <Stack.Screen
         options={{
+          headerTitle: "Edit Profile",
+          headerTitleAlign: "center",
           headerShown: true,
+          headerStyle: { backgroundColor: COLORS.background },
+          headerBackVisible: false,
+          headerTitleStyle: {
+            fontWeight: "bold",
+            fontSize: 20,
+            color: "#fff",
+          },
           headerLeft: () => (
             <TouchableOpacity onPress={() => router.push("/profile")}>
-              <Ionicons name="arrow-back" size={24} color="blue" />
+              <Ionicons
+                name="arrow-back"
+                size={24}
+                style={{ marginLeft: 8, padding: 5 }}
+                color="#fff"
+              />
             </TouchableOpacity>
           ),
         }}
