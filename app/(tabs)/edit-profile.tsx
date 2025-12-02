@@ -83,7 +83,7 @@ export default function EditProfileScreen() {
             }
           />
           <PrimaryButton
-            title="Change data"
+            title="Update data"
             disabled={loading}
             onPress={handleUpdateUser}
           />
