@@ -15,13 +15,16 @@ console.log("[API Config] Using URL:", config.apiUrl);
 baseURL.interceptors.request.use(
   (config) => {
     const token = useStore.getState().isToken;
-    
+
     // Add token to all requests except auth endpoints (login/register)
-    const isAuthEndpoint = config.url?.includes("/auth/register") || config.url?.includes("/auth") || config.url === "/auth";
+    const isAuthEndpoint =
+      config.url?.includes("/auth/register") ||
+      config.url?.includes("/auth") ||
+      config.url === "/auth";
+
     if (token && !isAuthEndpoint) {
       config.headers.Authorization = `Bearer ${token}`;
     }
-    
     return config;
   },
   (error) => Promise.reject(error)
@@ -34,14 +37,14 @@ baseURL.interceptors.response.use(
     // Handle 401 Unauthorized: token expired or invalid
     if (error.response?.status === 401) {
       useStore.getState().clearToken();
-      
+
       // Redirect to login only if not already on auth routes
       const currentUrl = error.config?.url || "";
       if (!currentUrl.includes("/auth")) {
         router.replace("/(auth)/login");
       }
     }
-    
+
     return Promise.reject(error);
   }
 );
@@ -74,6 +77,17 @@ export async function signup(name: string, email: string, password: string) {
   );
 
   return data;
+}
+
+type DecodeTokenData = {
+  message: string;
+  userId: string;
+};
+
+export async function decodeToken() {
+  const { data } = await baseURL.post<DecodeTokenData>("/auth/decode");
+
+  return data.userId;
 }
 
 export async function logout(token: string) {

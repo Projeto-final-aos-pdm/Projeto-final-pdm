@@ -1,13 +1,13 @@
 import { Stack, router } from "expo-router";
 import React, { useState } from "react";
 import {
-    Alert,
-    SafeAreaView,
-    StatusBar,
-    StyleSheet,
-    Text,
-    TouchableOpacity,
-    View,
+  Alert,
+  SafeAreaView,
+  StatusBar,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
 } from "react-native";
 
 import { ScrollViewWithInsets } from "../../src/components/ScrollViewWithInset";
@@ -22,7 +22,7 @@ const LoginScreen: React.FC = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const setToken = useStore((state: any) => state.setToken);
-  const getToken = useStore((state: any) => state.isToken);
+  const getToken = useStore((state: any) => state.getToken);
 
   const handleLogin = async () => {
     try {
@@ -34,7 +34,7 @@ const LoginScreen: React.FC = () => {
       const loginData = await login(email, password);
 
       setToken(loginData.token);
-      console.log("Token guardado no zustand: " + getToken);
+      console.log("Token guardado no zustand: " + getToken());
 
       router.replace("/home");
     } catch (error) {

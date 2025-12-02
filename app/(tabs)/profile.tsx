@@ -1,5 +1,5 @@
 import { Stack, router } from "expo-router";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import {
   Alert,
   SafeAreaView,
@@ -9,19 +9,22 @@ import {
   View,
 } from "react-native";
 
+import { getUserData } from "@/src/services/user";
+import { User } from "@/src/types/userTypes";
 import { logout } from "../../src/services/authentication";
 import { useStore } from "../../src/store/storage";
 import ProfileHeader from "../components/profile/ProfileHeader";
 import ProfileListItem from "../components/profile/ProfileListItem";
 import { COLORS } from "../styles/OnboardingStyles";
 
-const USER_DATA = {
-  name: "Syed Noman",
-  email: "syed@mail.com",
-  avatarUrl: "URL_DA_IMAGEM_AQUI",
-};
+// const USER_DATA = {
+//   name: "Syed Noman",
+//   email: "syed@mail.com",
+//   avatarUrl: ,
+// };
 
 const ProfileScreen: React.FC = () => {
+  const [userData, setUserData] = useState<User>();
   const token = useStore((state: any) => state.isToken);
   const clearToken = useStore((state: any) => state.clearToken);
 
@@ -59,6 +62,18 @@ const ProfileScreen: React.FC = () => {
     }
   };
 
+  useEffect(() => {
+    async function load() {
+      try {
+        const data = await getUserData();
+        setUserData(data);
+      } catch (error) {
+        console.log(error);
+      }
+    }
+    load();
+  }, []);
+
   return (
     <SafeAreaView style={styles.safeArea}>
       <StatusBar barStyle="light-content" backgroundColor={COLORS.background} />
@@ -75,9 +90,9 @@ const ProfileScreen: React.FC = () => {
 
       <ScrollView contentContainerStyle={styles.scrollContent}>
         <ProfileHeader
-          name={USER_DATA.name}
-          email={USER_DATA.email}
-          avatarUrl={USER_DATA.avatarUrl}
+          name={userData?.name || "Carregando informações"}
+          email={userData?.email || "Carregando informações"}
+          avatarUrl="URL_DA_IMAGEM_AQUI"
         />
 
         <View style={styles.menuContainer}>
