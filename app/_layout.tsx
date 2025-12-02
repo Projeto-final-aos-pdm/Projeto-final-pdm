@@ -8,6 +8,7 @@ export default function RootLayout() {
   const router = useRouter();
   const segments = useSegments();
   const token = useStore((state) => state.isToken);
+  const isHydrated = useStore((state) => state.isHydrated);
   const [isNavigationReady, setIsNavigationReady] = useState(false);
 
   useEffect(() => {
@@ -15,7 +16,7 @@ export default function RootLayout() {
   }, []);
 
   useEffect(() => {
-    if (!isNavigationReady) return;
+    if (!isNavigationReady || !isHydrated) return;
 
     const inAuthGroup = segments[0] === "(auth)";
     const inTabsGroup = segments[0] === "(tabs)";
@@ -38,7 +39,7 @@ export default function RootLayout() {
       router.replace("/");
       return;
     }
-  }, [token, segments, isNavigationReady, router]);
+  }, [token, segments, isNavigationReady, isHydrated, router]);
 
   return (
     <SafeAreaProvider>

@@ -2,22 +2,20 @@ import React from "react";
 import { Image, StyleSheet, Text, View } from "react-native";
 import { COLORS } from "../../styles/OnboardingStyles";
 
-const AVATAR_URL = "https://example.com/avatar.png";
+const AVATAR_URL = require("@/assets/images/Robotface.png");
 
 interface ProfileHeaderProps {
   name: string;
   email: string;
-  avatarUrl?: string;
 }
 
 const ProfileHeader: React.FC<ProfileHeaderProps> = ({
   name,
   email,
-  avatarUrl,
 }) => {
   return (
     <View style={styles.container}>
-      <Image source={{ uri: avatarUrl || AVATAR_URL }} style={styles.avatar} />
+      <Image source={AVATAR_URL} style={styles.avatar} />
       <Text style={styles.name}>{name} </Text>
       <Text style={styles.email}>{email}</Text>
     </View>

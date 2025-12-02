@@ -5,7 +5,7 @@ import config from "./api";
 
 const baseHeader = { "Content-Type": "application/json" };
 
-const baseURL = axios.create({
+export const baseURL = axios.create({
   baseURL: config.apiUrl,
 });
 
@@ -16,15 +16,16 @@ baseURL.interceptors.request.use(
   (config) => {
     const token = useStore.getState().isToken;
 
-    // Add token to all requests except auth endpoints (login/register)
-    const isAuthEndpoint =
+    // Add token to all requests except login/register endpoints
+    const isPublicAuthEndpoint =
       config.url?.includes("/auth/register") ||
-      config.url?.includes("/auth") ||
       config.url === "/auth";
 
-    if (token && !isAuthEndpoint) {
+    if (token && !isPublicAuthEndpoint) {
       config.headers.Authorization = `Bearer ${token}`;
-    }
+      console.log("[DEBUG] Token adicionado:", token.substring(0, 20) + "...");
+    } 
+
     return config;
   },
   (error) => Promise.reject(error)
@@ -81,13 +82,13 @@ export async function signup(name: string, email: string, password: string) {
 
 type DecodeTokenData = {
   message: string;
-  userId: string;
+  data: string;
 };
 
 export async function decodeToken() {
   const { data } = await baseURL.post<DecodeTokenData>("/auth/decode");
 
-  return data.userId;
+  return data.data;
 }
 
 export async function logout(token: string) {

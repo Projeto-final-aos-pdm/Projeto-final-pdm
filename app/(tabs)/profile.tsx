@@ -16,7 +16,6 @@ import { useStore } from "../../src/store/storage";
 import ProfileHeader from "../components/profile/ProfileHeader";
 import ProfileListItem from "../components/profile/ProfileListItem";
 import { COLORS } from "../styles/OnboardingStyles";
-
 // const USER_DATA = {
 //   name: "Syed Noman",
 //   email: "syed@mail.com",
@@ -92,7 +91,6 @@ const ProfileScreen: React.FC = () => {
         <ProfileHeader
           name={userData?.name || "Carregando informações"}
           email={userData?.email || "Carregando informações"}
-          avatarUrl="URL_DA_IMAGEM_AQUI"
         />
 
         <View style={styles.menuContainer}>

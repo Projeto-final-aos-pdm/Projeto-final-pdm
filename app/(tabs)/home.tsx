@@ -1,6 +1,6 @@
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { Stack, router } from "expo-router";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import {
   FlatList,
   ListRenderItem,
@@ -16,6 +16,8 @@ import { useSafeAreaInsets } from "react-native-safe-area-context";
 import DashboardHeader from "../components/DashboardHeader";
 import TransactionListItem from "../components/TransactionListItem";
 import { COLORS } from "../styles/OnboardingStyles";
+import { User } from "@/src/types/userTypes";
+import { getUserData } from "@/src/services/user";
 
 type TransactionData = {
   id: string;
@@ -72,12 +74,26 @@ const DUMMY_TRANSACTIONS: TransactionData[] = [
 ];
 
 const HomeScreen: React.FC = () => {
+  const [userData, setUserData] = useState<User>();
+
+
   const userBalance = {
-    userName: "Syed Noman",
     totalBalance: "$484.00",
     totalIncome: "$2379.00",
     totalExpense: "$1895.00",
   };
+
+  useEffect(() => {
+      async function load() {
+        try {
+          const data = await getUserData();
+          setUserData(data);
+        } catch (error) {
+          console.log(error);
+        }
+      }
+      load();
+    }, []);
 
   const handleAddTransaction = () => {
     router.push("/add-transaction");
@@ -110,7 +126,7 @@ const HomeScreen: React.FC = () => {
         ListHeaderComponent={() => (
           <View style={styles.headerComponent}>
             <DashboardHeader
-              userName={userBalance.userName}
+              userName={userData?.name || "Loading..."}
               totalBalance={userBalance.totalBalance}
               totalIncome={userBalance.totalIncome}
               totalExpense={userBalance.totalExpense}
