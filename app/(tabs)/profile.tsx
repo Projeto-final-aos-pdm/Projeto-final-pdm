@@ -1,5 +1,5 @@
-import { Stack, router } from "expo-router";
-import React from "react";
+import { Stack, router, useFocusEffect } from "expo-router";
+import React, { useCallback, useState } from "react";
 import {
   Alert,
   SafeAreaView,
@@ -9,19 +9,16 @@ import {
   View,
 } from "react-native";
 
+import { deleteUser, getUserData } from "@/src/services/user";
+import { User } from "@/src/types/userTypes";
 import { logout } from "../../src/services/authentication";
 import { useStore } from "../../src/store/storage";
 import ProfileHeader from "../components/profile/ProfileHeader";
 import ProfileListItem from "../components/profile/ProfileListItem";
 import { COLORS } from "../styles/OnboardingStyles";
 
-const USER_DATA = {
-  name: "Syed Noman",
-  email: "syed@mail.com",
-  avatarUrl: "URL_DA_IMAGEM_AQUI",
-};
-
 const ProfileScreen: React.FC = () => {
+  const [userData, setUserData] = useState<User>();
   const token = useStore((state: any) => state.isToken);
   const clearToken = useStore((state: any) => state.clearToken);
 
@@ -37,6 +34,24 @@ const ProfileScreen: React.FC = () => {
         {
           text: "Sim",
           onPress: handleLogout,
+        },
+      ],
+      { cancelable: true }
+    );
+  };
+
+  const handleConfirmDeleteAccount = () => {
+    Alert.alert(
+      "Confirmar ação",
+      "Você realmente deseja deletar a sua conta?",
+      [
+        {
+          text: "Não",
+          onPress: () => {},
+        },
+        {
+          text: "Sim",
+          onPress: handleDelete,
         },
       ],
       { cancelable: true }
@@ -59,6 +74,33 @@ const ProfileScreen: React.FC = () => {
     }
   };
 
+  const handleDelete = async () => {
+    try {
+      await deleteUser();
+      Alert.alert("Aviso", "Usuário deletado");
+      clearToken();
+      router.replace("/login");
+    } catch (error) {
+      clearToken();
+      router.replace("/login");
+    }
+  };
+
+  useFocusEffect(
+    useCallback(() => {
+      async function load() {
+        try {
+          const data = await getUserData();
+          setUserData(data);
+        } catch (error) {
+          console.log(error);
+        }
+      }
+
+      load();
+    }, [])
+  );
+
   return (
     <SafeAreaView style={styles.safeArea}>
       <StatusBar barStyle="light-content" backgroundColor={COLORS.background} />
@@ -75,9 +117,8 @@ const ProfileScreen: React.FC = () => {
 
       <ScrollView contentContainerStyle={styles.scrollContent}>
         <ProfileHeader
-          name={USER_DATA.name}
-          email={USER_DATA.email}
-          avatarUrl={USER_DATA.avatarUrl}
+          name={userData?.name || "Carregando informações"}
+          email={userData?.email || "Carregando informações"}
         />
 
         <View style={styles.menuContainer}>
@@ -98,6 +139,12 @@ const ProfileScreen: React.FC = () => {
             iconColor="#FF9800"
             text="Privacy Policy"
             onPress={() => {}}
+          />
+          <ProfileListItem
+            icon="delete"
+            iconColor="#f33942ff"
+            text="Delete Account"
+            onPress={handleConfirmDeleteAccount}
           />
           <ProfileListItem
             icon="logout"

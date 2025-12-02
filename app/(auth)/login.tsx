@@ -1,13 +1,13 @@
 import { Stack, router } from "expo-router";
 import React, { useState } from "react";
 import {
-    Alert,
-    SafeAreaView,
-    StatusBar,
-    StyleSheet,
-    Text,
-    TouchableOpacity,
-    View,
+  Alert,
+  SafeAreaView,
+  StatusBar,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
 } from "react-native";
 
 import { ScrollViewWithInsets } from "../../src/components/ScrollViewWithInset";
@@ -21,8 +21,9 @@ import { COLORS } from "../styles/OnboardingStyles";
 const LoginScreen: React.FC = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [loading, setLoading] = useState(false);
   const setToken = useStore((state: any) => state.setToken);
-  const getToken = useStore((state: any) => state.isToken);
+  const getToken = useStore((state: any) => state.getToken);
 
   const handleLogin = async () => {
     try {
@@ -31,15 +32,18 @@ const LoginScreen: React.FC = () => {
         return;
       }
 
+      setLoading(true);
       const loginData = await login(email, password);
 
       setToken(loginData.token);
-      console.log("Token guardado no zustand: " + getToken);
+      console.log("Token guardado no zustand: " + getToken());
 
+      setLoading(false);
       router.replace("/home");
     } catch (error) {
       console.log(error);
       Alert.alert("Erro", "Email ou senha inválido");
+      setLoading(false);
     }
   };
 
@@ -90,6 +94,7 @@ const LoginScreen: React.FC = () => {
 
           <PrimaryButton
             title="Login"
+            disabled={loading}
             onPress={handleLogin}
             style={styles.loginButton}
           />
