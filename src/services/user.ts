@@ -17,3 +17,9 @@ export async function updateUser({ name, email }: UserRequestUpdate) {
     email,
   });
 }
+
+export async function deleteUser() {
+  const userId = await decodeToken();
+
+  await baseURL.delete(`/user/${userId}`);
+}

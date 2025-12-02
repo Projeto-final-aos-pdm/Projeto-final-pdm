@@ -9,7 +9,7 @@ import {
   View,
 } from "react-native";
 
-import { getUserData } from "@/src/services/user";
+import { deleteUser, getUserData } from "@/src/services/user";
 import { User } from "@/src/types/userTypes";
 import { logout } from "../../src/services/authentication";
 import { useStore } from "../../src/store/storage";
@@ -40,6 +40,24 @@ const ProfileScreen: React.FC = () => {
     );
   };
 
+  const handleConfirmDeleteAccount = () => {
+    Alert.alert(
+      "Confirmar ação",
+      "Você realmente deseja deletar a sua conta?",
+      [
+        {
+          text: "Não",
+          onPress: () => {},
+        },
+        {
+          text: "Sim",
+          onPress: handleDelete,
+        },
+      ],
+      { cancelable: true }
+    );
+  };
+
   const handleEditProfile = () => {
     router.push("/edit-profile");
   };
@@ -51,6 +69,18 @@ const ProfileScreen: React.FC = () => {
       router.replace("/login");
     } catch (error) {
       // Clear token locally even if backend request fails
+      clearToken();
+      router.replace("/login");
+    }
+  };
+
+  const handleDelete = async () => {
+    try {
+      await deleteUser();
+      Alert.alert("Aviso", "Usuário deletado");
+      clearToken();
+      router.replace("/login");
+    } catch (error) {
       clearToken();
       router.replace("/login");
     }
@@ -109,6 +139,12 @@ const ProfileScreen: React.FC = () => {
             iconColor="#FF9800"
             text="Privacy Policy"
             onPress={() => {}}
+          />
+          <ProfileListItem
+            icon="delete"
+            iconColor="#f33942ff"
+            text="Delete Account"
+            onPress={handleConfirmDeleteAccount}
           />
           <ProfileListItem
             icon="logout"
