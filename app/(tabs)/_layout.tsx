@@ -9,10 +9,12 @@ export default function RootLayout() {
           title: "Home",
         }}
       />
+      <Tabs.Screen name="accounts" options={{ title: "Accounts" }} />
+
       <Tabs.Screen
         name="budgets"
         options={{
-          title: "Budget",
+          href: null,
         }}
       />
       <Tabs.Screen name="add-budget-item" options={{ href: null }} />
@@ -20,6 +22,8 @@ export default function RootLayout() {
       <Tabs.Screen name="add-wallet" options={{ href: null }} />
       <Tabs.Screen name="create-budget" options={{ href: null }} />
       <Tabs.Screen name="edit-profile" options={{ href: null }} />
+      <Tabs.Screen name="create-account" options={{ href: null }} />
+      <Tabs.Screen name="edit-account/[id]" options={{ href: null }} />
 
       <Tabs.Screen name="profile" options={{ href: null }} />
       <Tabs.Screen name="select-category" />

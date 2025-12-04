@@ -2,8 +2,8 @@ import { router } from "expo-router";
 import React from "react";
 import { StatusBar, StyleSheet, View } from "react-native";
 import {
-    SafeAreaView,
-    useSafeAreaInsets,
+  SafeAreaView,
+  useSafeAreaInsets,
 } from "react-native-safe-area-context";
 
 import OnboardingContent from "./components/OnboardingContent";
