@@ -8,6 +8,10 @@
     "scheme": "projetofinalpdm",
     "userInterfaceStyle": "automatic",
     "newArchEnabled": true,
+    "androidNavigationBar": {
+      "visible": true,
+      "themeColor": "#000000"
+    },
     "ios": {
       "supportsTablet": true
     },

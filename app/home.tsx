@@ -1,15 +1,21 @@
-import React from 'react';
-import { 
-    View, Text, StyleSheet, SafeAreaView, 
-    StatusBar, FlatList, TouchableOpacity, 
-    ListRenderItem 
-} from 'react-native';
+import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { Stack, router } from 'expo-router';
-import { MaterialCommunityIcons } from '@expo/vector-icons'; 
+import React from 'react';
+import {
+  FlatList,
+  ListRenderItem,
+  SafeAreaView,
+  StatusBar,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View
+} from 'react-native';
 
-import DashboardHeader from './components/DashboardHeader'; 
-import TransactionListItem from './components/TransactionListItem'; 
-import { COLORS } from './styles/OnboardingStyles'; 
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import DashboardHeader from './components/DashboardHeader';
+import TransactionListItem from './components/TransactionListItem';
+import { COLORS } from './styles/OnboardingStyles';
 
 type TransactionData = {
   id: string;
@@ -41,6 +47,10 @@ const HomeScreen: React.FC = () => {
     router.push('/add-transaction');
   };
 
+  const handleGoFinancialGoal = () => {
+    router.push("/financial-goal")
+  }
+
   const renderItem: ListRenderItem<TransactionData> = ({ item }) => (
     <TransactionListItem 
       transaction={item} 
@@ -51,12 +61,19 @@ const HomeScreen: React.FC = () => {
     />
   );
 
+  const insets = useSafeAreaInsets(); // ← pega os espaçamentos seguros
   return (
+    
     <SafeAreaView style={styles.safeArea}>
       <StatusBar barStyle="light-content" backgroundColor={COLORS.background} />
       <Stack.Screen options={{ headerShown: false }} /> 
       
       <FlatList 
+        contentContainerStyle={{
+            paddingHorizontal: 20,
+            paddingTop: insets.top + 10,     // respeita a StatusBar
+            paddingBottom: insets.bottom + 100, // dá espaço pro FAB e navigation bar
+          }}
         ListHeaderComponent={() => (
           <View style={styles.headerComponent}>
             <DashboardHeader 
@@ -71,11 +88,13 @@ const HomeScreen: React.FC = () => {
         data={DUMMY_TRANSACTIONS}
         renderItem={renderItem}
         keyExtractor={(item: TransactionData) => item.id}
-        contentContainerStyle={styles.listContent}
         showsVerticalScrollIndicator={false}
       />
       
       <TouchableOpacity style={styles.fab} onPress={handleAddTransaction}>
+        <MaterialCommunityIcons name="plus" size={30} color={COLORS.background} />
+      </TouchableOpacity>
+      <TouchableOpacity style={styles.fab2} onPress={handleGoFinancialGoal}>
         <MaterialCommunityIcons name="plus" size={30} color={COLORS.background} />
       </TouchableOpacity>
     </SafeAreaView>
@@ -102,6 +121,22 @@ const styles = StyleSheet.create({
     marginTop: 10,
     paddingHorizontal: 5,
   },
+  fab2: {
+ position: 'absolute',
+    width: 160,
+    height: 60,
+    alignItems: 'center',
+    justifyContent: 'center',
+    right: 25,
+    bottom: 105,
+    backgroundColor: COLORS.background,
+    borderRadius: 30,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.3,
+    shadowRadius: 5,
+    elevation: 8,
+  },
   fab: {
     position: 'absolute',
     width: 60,
@@ -109,7 +144,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     right: 25,
-    bottom: 25,
+    bottom: 45,
     backgroundColor: COLORS.accent,
     borderRadius: 30,
     shadowColor: '#000',

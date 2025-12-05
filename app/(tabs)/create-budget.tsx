@@ -1,23 +1,33 @@
-import React, { useState } from 'react';
-import { View, Text, StyleSheet, SafeAreaView, StatusBar, TextInput, TouchableOpacity, Alert } from 'react-native';
-import { Stack, router } from 'expo-router';
-import { MaterialCommunityIcons } from '@expo/vector-icons';
+import { MaterialCommunityIcons } from "@expo/vector-icons";
+import { Stack, router } from "expo-router";
+import React, { useState } from "react";
+import {
+  Alert,
+  SafeAreaView,
+  StatusBar,
+  StyleSheet,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  View,
+} from "react-native";
 
-import ColorSelector from './components/budgets/ColorSelector';
+import ColorSelector from "../components/budgets/ColorSelector";
 
 const COLORS = {
-  background: '#F5F5F5',
-  primary: '#6200EE', 
-  textPrimary: '#000000',
-  textSecondary: '#757575',
-  inputBg: '#FFFFFF',
+  background: "#F5F5F5",
+  primary: "#6200EE",
+  textPrimary: "#000000",
+  textSecondary: "#757575",
+  inputBg: "#FFFFFF",
 };
 
 const CreateBudgetScreen: React.FC = () => {
-  const [name, setName] = useState('');
-  const [limit, setLimit] = useState('');
-  const [selectedColor, setSelectedColor] = useState('#9C27B0'); 
-  const [selectedIcon] = useState<keyof typeof MaterialCommunityIcons.glyphMap>('sofa'); 
+  const [name, setName] = useState("");
+  const [limit, setLimit] = useState("");
+  const [selectedColor, setSelectedColor] = useState("#9C27B0");
+  const [selectedIcon] =
+    useState<keyof typeof MaterialCommunityIcons.glyphMap>("sofa");
 
   const handleCreate = () => {
     if (!name || !limit) {
@@ -25,43 +35,60 @@ const CreateBudgetScreen: React.FC = () => {
       return;
     }
 
-    console.log("Criar Orçamento:", { name, limit, selectedColor, selectedIcon });
+    console.log("Criar Orçamento:", {
+      name,
+      limit,
+      selectedColor,
+      selectedIcon,
+    });
     router.back();
   };
 
   return (
     <SafeAreaView style={styles.safeArea}>
       <StatusBar barStyle="dark-content" backgroundColor={COLORS.background} />
-      
-      <Stack.Screen 
+
+      <Stack.Screen
         options={{
           headerShown: true,
-          headerTitle: "", 
+          headerTitle: "",
           headerStyle: { backgroundColor: COLORS.background },
           headerShadowVisible: false,
           headerTintColor: COLORS.textPrimary,
-          headerBackTitle: "", 
-        }} 
+          headerBackTitle: "",
+        }}
       />
 
       <View style={styles.container}>
-        
         {/* Pré-visualização */}
         <View style={styles.previewContainer}>
-          <View style={[styles.previewCircle, { backgroundColor: selectedColor }]}>
-             <MaterialCommunityIcons name={selectedIcon} size={40} color="#FFF" />
+          <View
+            style={[styles.previewCircle, { backgroundColor: selectedColor }]}
+          >
+            <MaterialCommunityIcons
+              name={selectedIcon}
+              size={40}
+              color="#FFF"
+            />
           </View>
-          
+
           {/* Seletor de Cores logo abaixo */}
-          <ColorSelector selectedColor={selectedColor} onSelect={setSelectedColor} />
+          <ColorSelector
+            selectedColor={selectedColor}
+            onSelect={setSelectedColor}
+          />
         </View>
 
         {/* Inputs */}
         <View style={styles.form}>
-          
           {/* Nome */}
           <View style={styles.inputContainer}>
-            <MaterialCommunityIcons name="tag-outline" size={24} color={COLORS.textSecondary} style={styles.icon} />
+            <MaterialCommunityIcons
+              name="tag-outline"
+              size={24}
+              color={COLORS.textSecondary}
+              style={styles.icon}
+            />
             <TextInput
               style={styles.input}
               placeholder="Category Name"
@@ -73,7 +100,12 @@ const CreateBudgetScreen: React.FC = () => {
 
           {/* Valor Limite */}
           <View style={styles.inputContainer}>
-            <MaterialCommunityIcons name="currency-usd" size={24} color={COLORS.textSecondary} style={styles.icon} />
+            <MaterialCommunityIcons
+              name="currency-usd"
+              size={24}
+              color={COLORS.textSecondary}
+              style={styles.icon}
+            />
             <TextInput
               style={styles.input}
               placeholder="Total Budget"
@@ -83,18 +115,16 @@ const CreateBudgetScreen: React.FC = () => {
               onChangeText={setLimit}
             />
           </View>
-
         </View>
 
         {/* Botão Criar */}
-        <TouchableOpacity 
-          style={styles.createButton} 
+        <TouchableOpacity
+          style={styles.createButton}
           onPress={handleCreate}
           activeOpacity={0.9}
         >
           <Text style={styles.createButtonText}>Create</Text>
         </TouchableOpacity>
-
       </View>
     </SafeAreaView>
   );
@@ -108,12 +138,12 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     paddingHorizontal: 20,
-    justifyContent: 'space-between', 
+    justifyContent: "space-between",
     paddingBottom: 30,
   },
-  
+
   previewContainer: {
-    alignItems: 'center',
+    alignItems: "center",
     marginTop: 10,
     marginBottom: 30,
   },
@@ -121,10 +151,10 @@ const styles = StyleSheet.create({
     width: 80,
     height: 80,
     borderRadius: 40,
-    justifyContent: 'center',
-    alignItems: 'center',
+    justifyContent: "center",
+    alignItems: "center",
     marginBottom: 10,
-    shadowColor: '#000',
+    shadowColor: "#000",
     shadowOffset: { width: 0, height: 4 },
     shadowOpacity: 0.2,
     shadowRadius: 5,
@@ -132,18 +162,18 @@ const styles = StyleSheet.create({
   },
 
   form: {
-    flex: 1, 
+    flex: 1,
   },
   inputContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
+    flexDirection: "row",
+    alignItems: "center",
     backgroundColor: COLORS.inputBg,
     borderRadius: 12,
     paddingHorizontal: 15,
     height: 60,
     marginBottom: 15,
     borderWidth: 1,
-    borderColor: '#E0E0E0',
+    borderColor: "#E0E0E0",
   },
   icon: {
     marginRight: 10,
@@ -157,9 +187,9 @@ const styles = StyleSheet.create({
   createButton: {
     backgroundColor: COLORS.primary,
     height: 55,
-    borderRadius: 30, 
-    justifyContent: 'center',
-    alignItems: 'center',
+    borderRadius: 30,
+    justifyContent: "center",
+    alignItems: "center",
     shadowColor: COLORS.primary,
     shadowOffset: { width: 0, height: 4 },
     shadowOpacity: 0.3,
@@ -167,9 +197,9 @@ const styles = StyleSheet.create({
     elevation: 6,
   },
   createButtonText: {
-    color: '#FFF',
+    color: "#FFF",
     fontSize: 18,
-    fontWeight: '600',
+    fontWeight: "600",
   },
 });
 

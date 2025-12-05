@@ -1,7 +1,7 @@
 import React from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+import { StyleSheet, Text, View } from 'react-native';
 
-import { COLORS } from '../styles/OnboardingStyles'; 
+import { COLORS } from '../styles/OnboardingStyles';
 
 const OnboardingContent: React.FC = () => {
   return (
@@ -17,7 +17,7 @@ const OnboardingContent: React.FC = () => {
           Always take control of your finances
         </Text>
         <Text style={styles.subtitle}>
-          Finances must be arranged to set a better lifestyle in future
+          Arrange your finances to build a better lifestyle for the future
         </Text>
       </View>
       
