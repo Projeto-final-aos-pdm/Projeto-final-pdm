@@ -8,7 +8,6 @@ import {
   StatusBar,
   StyleSheet,
   Text,
-  TouchableOpacity,
   View,
 } from "react-native";
 
@@ -97,10 +96,6 @@ const HomeScreen: React.FC = () => {
     }, [])
   );
 
-  const handleAddTransaction = () => {
-    router.push("/add-transaction");
-  };
-
   const renderItem: ListRenderItem<TransactionData> = ({ item }) => (
     <TransactionListItem
       transaction={item}
@@ -113,7 +108,7 @@ const HomeScreen: React.FC = () => {
     />
   );
 
-  const insets = useSafeAreaInsets(); // ← pega os espaçamentos seguros
+  const insets = useSafeAreaInsets();
   return (
     <SafeAreaView style={styles.safeArea}>
       <StatusBar barStyle="light-content" backgroundColor={COLORS.background} />
@@ -122,8 +117,8 @@ const HomeScreen: React.FC = () => {
       <FlatList
         contentContainerStyle={{
           paddingHorizontal: 20,
-          paddingTop: insets.top + 10, // respeita a StatusBar
-          paddingBottom: insets.bottom + 100, // dá espaço pro FAB e navigation bar
+          paddingTop: insets.top + 10,
+          paddingBottom: insets.bottom + 100,
         }}
         ListHeaderComponent={() => (
           <View style={styles.headerComponent}>
@@ -143,14 +138,6 @@ const HomeScreen: React.FC = () => {
         keyExtractor={(item: TransactionData) => item.id}
         showsVerticalScrollIndicator={false}
       />
-
-      <TouchableOpacity style={styles.fab} onPress={handleAddTransaction}>
-        <MaterialCommunityIcons
-          name="plus"
-          size={30}
-          color={COLORS.background}
-        />
-      </TouchableOpacity>
     </SafeAreaView>
   );
 };

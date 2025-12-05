@@ -67,25 +67,24 @@ export default function TransactionDetailScreen() {
 
   useFocusEffect(
     useCallback(() => {
+      setTransactionData([]);
       async function load() {
         try {
           setbankName("");
+          console.log("ID da conta:", id);
           const accountData = await getAccountById(id as string);
           setbankName(accountData.data.bank);
 
           const transacitonsData = await getAllTransaction(id as string);
 
-          console.log(transacitonsData);
-
           setTransactionData(transacitonsData.data);
-          console.log(bankName);
         } catch (error) {
           console.log(error);
         }
       }
 
       load();
-    }, [])
+    }, [id])
   );
   return (
     <SafeAreaView style={styles.safeArea}>
