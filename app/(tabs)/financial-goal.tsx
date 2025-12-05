@@ -1,11 +1,15 @@
+import { deleteFinancialGoal, getAllFinancialGoal } from '@/src/services/financial-goal';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
-import React from 'react';
+import { Stack, useRouter } from "expo-router";
+import React, { useEffect, useState } from 'react';
 import {
   FlatList,
   ListRenderItem,
+  RefreshControl,
   StyleSheet,
   Text,
-  View,
+  TouchableOpacity,
+  View
 } from 'react-native';
 import { SafeAreaView, useSafeAreaInsets } from 'react-native-safe-area-context';
 
@@ -17,41 +21,58 @@ const COLORS = {
   accent: '#00C853',
 };
 
-// Dados de teste
-const GOALS = [
-  {
-    id: '1',
-    title: 'Carro Novo',
-    description: 'Honda Civic 2025 zero km',
-    target: 30000,
-    current: 18500,
-    deadline: '15 Jul 2026',
-  },
-  {
-    id: '2',
-    title: 'Viagem Japão',
-    description: 'Tokyo + Kyoto em 2026',
-    target: 8000,
-    current: 3200,
-    deadline: '01 Mar 2026',
-  },
-  {
-    id: '3',
-    title: 'Fundo de Emergência',
-    description: '6 meses de despesas',
-    target: 15000,
-    current: 15000,
-    deadline: 'Concluído',
-  },
-];
-
 export default function FinancialGoalScreen() {
   const insets = useSafeAreaInsets();
+  const router = useRouter();
+
+  const [goals, setGoals] = useState<any[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [refreshing, setRefreshing] = useState(false);
+
+  const loadGoals = async () => {
+    try {
+      const result = await getAllFinancialGoal();
+
+      const formatted = result.data.map((g: any) => ({
+        id: g.id,
+        title: g.description ?? "Meta",
+        description: g.description ?? "",
+        target: Number(g.target_value),
+        current: Number(g.current_value),
+        deadline: new Date(g.deadline).toLocaleDateString('pt-BR'),
+      }));
+
+      setGoals(formatted);
+    } catch (error) {
+      console.log("Erro ao carregar metas:", error);
+    } finally {
+      setLoading(false);
+      setRefreshing(false);
+    }
+  };
+
+  useEffect(() => {
+    loadGoals();
+  }, []);
+
+  const onRefresh = () => {
+    setRefreshing(true);
+    loadGoals();
+  };
+
+  const handleDelete = async (id: string) => {
+    try {
+      await deleteFinancialGoal(id);
+      loadGoals();
+    } catch (err) {
+      console.log("Erro ao deletar:", err);
+    }
+  };
 
   const formatMoney = (value: number) =>
-    `$${value.toLocaleString('en-US', { minimumFractionDigits: 2 })}`;
+    `R$ ${value.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}`;
 
-  const renderGoal: ListRenderItem<(typeof GOALS)[0]> = ({ item }) => {
+  const renderGoal: ListRenderItem<any> = ({ item }) => {
     const progress = item.current > 0 ? (item.current / item.target) * 100 : 0;
     const isCompleted = item.current >= item.target;
 
@@ -62,6 +83,20 @@ export default function FinancialGoalScreen() {
             <Text style={styles.title}>{item.title}</Text>
             <Text style={styles.description}>{item.description}</Text>
           </View>
+
+          <TouchableOpacity
+            style={styles.editBtn}
+            onPress={() => router.push(`/financial-goal/${item.id}`)}
+          >
+            <MaterialCommunityIcons name="pencil" size={22} color="#000" />
+          </TouchableOpacity>
+
+          <TouchableOpacity
+            style={styles.deleteBtn}
+            onPress={() => handleDelete(item.id)}
+          >
+            <MaterialCommunityIcons name="trash-can" size={22} color="#000" />
+          </TouchableOpacity>
         </View>
 
         <View style={styles.amounts}>
@@ -111,20 +146,31 @@ export default function FinancialGoalScreen() {
 
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: COLORS.background }}>
+      <Stack.Screen options={{ headerShown: false }} />
+
       <View style={[styles.container, { paddingTop: insets.top + 10 }]}>
         <Text style={styles.pageTitle}>Minhas Metas Financeiras</Text>
 
         <FlatList
-          data={GOALS}
+          data={goals}
           renderItem={renderGoal}
           keyExtractor={(item) => item.id}
-          contentContainerStyle={{ paddingBottom: 100 }}
+          refreshControl={
+            <RefreshControl
+              refreshing={refreshing}
+              onRefresh={onRefresh}
+              tintColor="#fff"
+            />
+          }
+          contentContainerStyle={{ paddingBottom: 120 }}
           showsVerticalScrollIndicator={false}
           ListEmptyComponent={
+          !loading ? (
             <Text style={{ color: '#888', textAlign: 'center', marginTop: 50 }}>
               Nenhuma meta encontrada
             </Text>
-          }
+          ) : null
+        }
         />
       </View>
     </SafeAreaView>
@@ -132,13 +178,10 @@ export default function FinancialGoalScreen() {
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    paddingHorizontal: 20,
-  },
+  container: { flex: 1, paddingHorizontal: 20 },
   pageTitle: {
     fontSize: 26,
-    fontWeight: 'bold',
+    fontWeight: "bold",
     color: COLORS.textPrimary,
     marginBottom: 10,
   },
@@ -147,21 +190,27 @@ const styles = StyleSheet.create({
     borderRadius: 16,
     padding: 18,
     marginBottom: 16,
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 4 },
-    shadowOpacity: 0.3,
-    shadowRadius: 8,
-    elevation: 8,
   },
   header: {
-    flexDirection: 'row',
-    alignItems: 'center',
+    flexDirection: "row",
+    alignItems: "center",
     marginBottom: 16,
+    gap: 8,
+  },
+  editBtn: {
+    backgroundColor: COLORS.accent,
+    padding: 8,
+    borderRadius: 10,
+  },
+  deleteBtn: {
+    backgroundColor: "#ff3b30",
+    padding: 8,
+    borderRadius: 10,
   },
   title: {
     color: COLORS.textPrimary,
     fontSize: 18,
-    fontWeight: 'bold',
+    fontWeight: "bold",
   },
   description: {
     color: COLORS.textSecondary,
@@ -169,54 +218,45 @@ const styles = StyleSheet.create({
     marginTop: 4,
   },
   amounts: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
+    flexDirection: "row",
+    justifyContent: "space-between",
     marginBottom: 12,
   },
-  label: {
-    color: COLORS.textSecondary,
-    fontSize: 12,
-  },
+  label: { color: COLORS.textSecondary, fontSize: 12 },
   current: {
     color: COLORS.textPrimary,
     fontSize: 20,
-    fontWeight: 'bold',
+    fontWeight: "bold",
   },
   target: {
     color: COLORS.accent,
     fontSize: 18,
-    fontWeight: 'bold',
+    fontWeight: "bold",
   },
   progressContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
+    flexDirection: "row",
+    alignItems: "center",
     marginBottom: 10,
   },
   progressBg: {
     flex: 1,
     height: 10,
-    backgroundColor: '#3E3E42',
+    backgroundColor: "#3E3E42",
     borderRadius: 5,
-    overflow: 'hidden',
+    overflow: "hidden",
     marginRight: 10,
   },
-  progressFill: {
-    height: '100%',
-    borderRadius: 5,
-  },
-  percent: {
-    color: COLORS.textPrimary,
-    fontWeight: 'bold',
-  },
+  progressFill: { height: "100%", borderRadius: 5 },
+  percent: { color: COLORS.textPrimary, fontWeight: "bold" },
   footer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
   },
   deadline: {
     color: COLORS.textSecondary,
     fontSize: 13,
-    marginLeft: 6,
     flex: 1,
+    marginLeft: 6,
   },
 });
