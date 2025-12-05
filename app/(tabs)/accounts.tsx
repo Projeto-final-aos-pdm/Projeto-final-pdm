@@ -2,7 +2,14 @@ import { deleteAccount, getAllAccounts } from "@/src/services/account";
 import { Account } from "@/src/types/accountTypes";
 import { router, Stack, useFocusEffect } from "expo-router";
 import { useCallback, useState } from "react";
-import { Alert, FlatList, StyleSheet, Text, View } from "react-native";
+import {
+  ActivityIndicator,
+  Alert,
+  FlatList,
+  StyleSheet,
+  Text,
+  View,
+} from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import AccountListItem from "../components/accounts/AccountListItem";
 import PrimaryButton from "../components/ui/PrimaryButton";
@@ -102,11 +109,29 @@ export default function Accounts() {
             handleUpdate={() => handleUpdateAccount(item.id)}
           />
         )}
-        ListEmptyComponent={() => (
-          <Text style={{ color: COLORS.textPrimary }}>
-            Nenhuma conta encontrada.
-          </Text>
-        )}
+        ListEmptyComponent={() => {
+          if (!accountsData) {
+            return (
+              <ActivityIndicator
+                size="large"
+                color={COLORS.accent}
+                style={{ marginTop: 20 }}
+              />
+            );
+          }
+
+          return (
+            <Text
+              style={{
+                color: COLORS.textPrimary,
+                textAlign: "center",
+                marginTop: 20,
+              }}
+            >
+              Nenhuma transação encontrada.
+            </Text>
+          );
+        }}
         contentContainerStyle={{ gap: 12, paddingBottom: 20 }}
         showsVerticalScrollIndicator={false}
       />

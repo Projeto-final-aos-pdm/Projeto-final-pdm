@@ -10,16 +10,16 @@ export async function getAllAccounts(): Promise<Account[]> {
 
   const { data } = await baseURL.get<Account[]>(`/user/${userId}/accounts`);
 
-  console.log(data);
   return data;
 }
 
 export async function getAccountById(accountId: string) {
   const userId = await decodeToken();
+
   const { data } = await baseURL.get<Account>(
     `/user/${userId}/accounts/${accountId}`
   );
-  console.log("aaa" + data);
+
   return data;
 }
 

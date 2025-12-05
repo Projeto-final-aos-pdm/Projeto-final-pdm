@@ -10,10 +10,10 @@ import {
   View,
 } from "react-native";
 
-import { ScrollViewWithInsets } from "../../src/components/ScrollViewWithInset";
 import { login } from "../../src/services/authentication";
 import { useStore } from "../../src/store/storage";
 import AuthHeader from "../components/AuthHeader";
+import { ScrollViewWithInsets } from "../components/ScrollViewWithInset";
 import AuthInput from "../components/ui/AuthInput";
 import PrimaryButton from "../components/ui/PrimaryButton";
 import { COLORS } from "../styles/OnboardingStyles";
