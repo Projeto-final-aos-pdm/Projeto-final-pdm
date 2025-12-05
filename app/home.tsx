@@ -47,6 +47,10 @@ const HomeScreen: React.FC = () => {
     router.push('/add-transaction');
   };
 
+  const handleGoFinancialGoal = () => {
+    router.push("/financial-goal")
+  }
+
   const renderItem: ListRenderItem<TransactionData> = ({ item }) => (
     <TransactionListItem 
       transaction={item} 
@@ -90,6 +94,9 @@ const HomeScreen: React.FC = () => {
       <TouchableOpacity style={styles.fab} onPress={handleAddTransaction}>
         <MaterialCommunityIcons name="plus" size={30} color={COLORS.background} />
       </TouchableOpacity>
+      <TouchableOpacity style={styles.fab2} onPress={handleGoFinancialGoal}>
+        <MaterialCommunityIcons name="plus" size={30} color={COLORS.background} />
+      </TouchableOpacity>
     </SafeAreaView>
   );
 };
@@ -113,6 +120,22 @@ const styles = StyleSheet.create({
     marginBottom: 15,
     marginTop: 10,
     paddingHorizontal: 5,
+  },
+  fab2: {
+ position: 'absolute',
+    width: 160,
+    height: 60,
+    alignItems: 'center',
+    justifyContent: 'center',
+    right: 25,
+    bottom: 105,
+    backgroundColor: COLORS.background,
+    borderRadius: 30,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.3,
+    shadowRadius: 5,
+    elevation: 8,
   },
   fab: {
     position: 'absolute',
