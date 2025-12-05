@@ -17,9 +17,8 @@ export async function getAllTransaction(accountId: string) {
 
 export async function getTransactionById(transactionId: string) {
   const { data } = await baseURL.get<TransactionResponse>(
-    `/transactions/${transactionId}`
+    `/transaction/${transactionId}`
   );
-
   return data.data;
 }
 
