@@ -94,6 +94,7 @@ export default function RootLayout() {
         }}
       />
 
+
       <Tabs.Screen
         name="financial-goal/[id]"
         options={{
