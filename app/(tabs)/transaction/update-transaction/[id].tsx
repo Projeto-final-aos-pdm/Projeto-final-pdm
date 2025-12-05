@@ -2,7 +2,6 @@ import TransactionInput from "@/app/components/transactions/TransactionInput";
 import PrimaryButton from "@/app/components/ui/PrimaryButton";
 import { COLORS } from "@/app/styles/OnboardingStyles";
 import { getAllCategories } from "@/src/services/category";
-// ADICIONE AQUI: Importe a função que busca uma única transação pelo ID
 import {
   getTransactionById,
   updateTransaction,
@@ -49,7 +48,7 @@ export default function UpdateTransaction() {
         },
         id as string
       );
-      Alert.alert("Sucesso", "Transação atualizada com sucesso");
+      Alert.alert("Success", "Transaction created successfully");
 
       setLoad(false);
       router.push({
@@ -57,42 +56,42 @@ export default function UpdateTransaction() {
         params: { id: id as string },
       });
     } catch (error) {
-      Alert.alert("Erro", "Erro ao atualizar");
-      console.log(error);
+      Alert.alert("Error", "Server error");
     } finally {
       setLoad(false);
     }
   }
 
+  const formatDate = (dateString: string) => {
+    if (!dateString) return "";
+    try {
+      return new Date(dateString).toISOString().split("T")[0];
+    } catch (error) {
+      return String(dateString).split("T")[0];
+    }
+  };
+
   useFocusEffect(
     useCallback(() => {
-      async function loadData() {
+      async function load() {
         try {
-          setLoad(true);
-
           const categories = await getAllCategories();
+          const transaction = await getTransactionById(id as string);
+
+          setDescription(transaction.description);
+          setValue(transaction.value);
+          setType(transaction.type);
+          setDate(formatDate(transaction.date));
+          setCategoryId(transaction.category_id);
+
           setCategoryData(categories);
-
-          if (id) {
-            const transaction = await getTransactionById(id as string);
-
-            // 3. Preenche os inputs com os dados que vieram do banco
-            setDescription(transaction.description);
-            setValue(String(transaction.value)); // Converte para string para o input
-            setType(transaction.type);
-            setDate(transaction.date); // *Atenção ao formato da data (ex: DD/MM/AAAA)*
-            setCategoryId(transaction.category_id);
-          }
         } catch (error) {
           console.log(error);
-          Alert.alert("Erro", "Não foi possível carregar os dados.");
-        } finally {
-          setLoad(false);
         }
       }
 
-      loadData();
-    }, [id])
+      load();
+    }, [])
   );
 
   return (
@@ -158,11 +157,10 @@ export default function UpdateTransaction() {
             options={categoryData}
             placeholder="Selecione uma categoria"
           />
-
           <PrimaryButton
             disabled={load}
             onPress={handleUpdateTransaction}
-            title={load ? "Salvando..." : "Salvar Alterações"}
+            title="Add Transaction"
           />
         </View>
       </ScrollView>
@@ -185,7 +183,6 @@ const styles = StyleSheet.create({
   formContainer: {
     gap: 8,
   },
-  // O saveButton anterior não estava sendo usado no JSX, mas mantive o styles
   saveButton: {
     backgroundColor: COLORS.textPrimary,
     padding: 15,
