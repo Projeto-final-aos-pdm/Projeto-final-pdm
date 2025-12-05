@@ -78,6 +78,8 @@ export default function FinancialGoalScreen() {
 
     return (
       <View style={styles.card}>
+        {/* ... seu card atual permanece igual ... */}
+        {/* (mantive todo o conteúdo original) */}
         <View style={styles.header}>
           <View style={{ flex: 1 }}>
             <Text style={styles.title}>{item.title}</Text>
@@ -165,13 +167,22 @@ export default function FinancialGoalScreen() {
           contentContainerStyle={{ paddingBottom: 120 }}
           showsVerticalScrollIndicator={false}
           ListEmptyComponent={
-          !loading ? (
-            <Text style={{ color: '#888', textAlign: 'center', marginTop: 50 }}>
-              Nenhuma meta encontrada
-            </Text>
-          ) : null
-        }
+            !loading ? (
+              <Text style={{ color: '#888', textAlign: 'center', marginTop: 50 }}>
+                Nenhuma meta encontrada
+              </Text>
+            ) : null
+          }
         />
+
+        {/* ==== BOTÃO FLUTUANTE VERDE ==== */}
+        <TouchableOpacity
+          style={styles.fab}
+          onPress={() => router.push('/createFinancialGoal')}
+          activeOpacity={0.8}
+        >
+          <MaterialCommunityIcons name="plus" size={30} color="#000" />
+        </TouchableOpacity>
       </View>
     </SafeAreaView>
   );
@@ -258,5 +269,23 @@ const styles = StyleSheet.create({
     fontSize: 13,
     flex: 1,
     marginLeft: 6,
+  },
+
+  // ESTILO DO BOTÃO FLUTUANTE
+  fab: {
+    position: 'absolute',
+    right: 20,
+    bottom: 30,
+    backgroundColor: COLORS.accent,   // verde da sua paleta
+    width: 60,
+    height: 60,
+    borderRadius: 30,
+    alignItems: 'center',
+    justifyContent: 'center',
+    elevation: 8,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.3,
+    shadowRadius: 4,
   },
 });

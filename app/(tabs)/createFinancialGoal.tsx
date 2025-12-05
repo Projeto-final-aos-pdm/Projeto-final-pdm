@@ -1,15 +1,15 @@
 import { createFinancialGoal } from "@/src/services/financial-goal";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
-import { useRouter } from "expo-router";
+import { Stack, useRouter } from "expo-router";
 import React, { useState } from "react";
 import {
-    Alert,
-    ScrollView,
-    StyleSheet,
-    Text,
-    TextInput,
-    TouchableOpacity,
-    View,
+  Alert,
+  ScrollView,
+  StyleSheet,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  View,
 } from "react-native";
 
 const COLORS = {
@@ -56,6 +56,7 @@ export default function CreateFinancialGoal() {
 
   return (
     <ScrollView style={styles.container}>
+      <Stack.Screen options={{ headerShown: false }} />
       <Text style={styles.pageTitle}>Criar Nova Meta Financeira</Text>
 
       {/* Campo - Descrição */}
@@ -125,6 +126,7 @@ const styles = StyleSheet.create({
   },
 
   pageTitle: {
+    marginTop: 60,
     fontSize: 26,
     fontWeight: "bold",
     color: COLORS.textPrimary,

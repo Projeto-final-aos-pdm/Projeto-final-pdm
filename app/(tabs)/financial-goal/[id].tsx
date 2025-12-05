@@ -4,7 +4,7 @@ import {
   updateFinancialGoal,
 } from "@/src/services/financial-goal";
 
-import { router, useLocalSearchParams } from "expo-router";
+import { router, Stack, useLocalSearchParams } from "expo-router";
 import React, { useEffect, useState } from "react";
 import { StyleSheet, Text, TextInput, TouchableOpacity, View } from "react-native";
 
@@ -82,6 +82,7 @@ export default function FinancialGoalForm() {
   return (
     <View style={styles.container}>
       <Text style={styles.title}>{isEditing ? "Editar Meta" : "Criar Meta"}</Text>
+      <Stack.Screen options={{ headerShown: false }} />
 
       <TextInput
         style={styles.input}
@@ -136,6 +137,7 @@ const styles = StyleSheet.create({
     backgroundColor: "#000",
   },
   title: {
+    marginTop: 50,
     fontSize: 26,
     fontWeight: "bold",
     color: "#fff",
