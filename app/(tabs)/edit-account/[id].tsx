@@ -1,11 +1,16 @@
 import AccountInput from "@/app/components/accounts/AccountInput";
 import PrimaryButton from "@/app/components/ui/PrimaryButton";
 import { COLORS } from "@/app/styles/OnboardingStyles";
-import { updateAccounts } from "@/src/services/account";
+import { getAccountById, updateAccounts } from "@/src/services/account";
 import { AccountRequest, AccountTypeValues } from "@/src/types/accountTypes";
 import { Ionicons } from "@expo/vector-icons";
-import { router, Stack, useLocalSearchParams } from "expo-router";
-import { useState } from "react";
+import {
+  router,
+  Stack,
+  useFocusEffect,
+  useLocalSearchParams,
+} from "expo-router";
+import { useCallback, useState } from "react";
 import {
   Alert,
   ScrollView,
@@ -17,7 +22,7 @@ import { SafeAreaView } from "react-native-safe-area-context";
 
 export default function EditAccount() {
   const { id } = useLocalSearchParams();
-  const accountId = Array.isArray(id) ? id[0] : id;
+
   const [loading, setLoading] = useState(false);
   const [accountData, setAccountData] = useState<AccountRequest>({
     bank: "",
@@ -31,11 +36,6 @@ export default function EditAccount() {
       return;
     }
 
-    if (!accountId) {
-      Alert.alert("Erro", "ID da conta não encontrado.");
-      return;
-    }
-
     try {
       setLoading(true);
 
@@ -45,7 +45,7 @@ export default function EditAccount() {
           is_active: accountData.is_active,
           type: accountData.type,
         },
-        accountId
+        id as string
       );
 
       Alert.alert("Sucesso", "Conta atualizada com sucesso!", [
@@ -57,23 +57,21 @@ export default function EditAccount() {
       setLoading(false);
     }
   }
-  // Depois debuggar
-  //   useFocusEffect(
-  //     useCallback(() => {
-  //       async function load() {
-  //         try {
-  //           console.log(typeof accountId);
-  //           const data = await getAccountById(accountId);
-  //           console.log(data);
-  //           setAccountData(data);
-  //         } catch (error) {
-  //           console.log(error);
-  //         }
-  //       }
+  useFocusEffect(
+    useCallback(() => {
+      async function load() {
+        try {
+          const data = await getAccountById(id as string);
+          console.log(data);
+          setAccountData(data);
+        } catch (error) {
+          console.log(error);
+        }
+      }
 
-  //       load();
-  //     }, [accountId])
-  //   );
+      load();
+    }, [])
+  );
 
   return (
     <SafeAreaView style={styles.safeArea}>
