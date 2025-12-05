@@ -62,6 +62,32 @@ export default function RootLayout() {
         }}
       />
       <Tabs.Screen
+        name="createMonthlyBudget"
+        options={{
+          href: null,
+        }}
+      />
+      <Tabs.Screen
+        name="monthly-budget/[id]"
+        options={{
+          href: null,
+        }}
+      />
+
+      <Tabs.Screen
+        name="monthly-budget"
+        options={{
+          title: "Monthly Budget",
+          tabBarIcon: ({ color, focused }) => (
+            <Ionicons
+              name={focused ? "paper-plane" : "paper-plane"}
+              color={color}
+              size={24}
+            />
+          ),
+        }}
+      />
+      <Tabs.Screen
         name="createFinancialGoal"
         options={{
           href: null,

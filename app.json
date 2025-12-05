@@ -1,5 +1,9 @@
 {
   "expo": {
+    "androidNavigationBar": {
+      "visible": "sticky-immersive",
+      "backgroundColor": "#000000"
+    },
     "name": "projeto-final-pdm",
     "slug": "projeto-final-pdm",
     "version": "1.0.0",
@@ -8,10 +12,7 @@
     "scheme": "projetofinalpdm",
     "userInterfaceStyle": "automatic",
     "newArchEnabled": true,
-    "androidNavigationBar": {
-      "visible": true,
-      "themeColor": "#000000"
-    },
+    
     "ios": {
       "supportsTablet": true
     },
@@ -43,7 +44,8 @@
             "backgroundColor": "#000000"
           }
         }
-      ]
+      ],
+      "expo-web-browser"
     ],
     "experiments": {
       "typedRoutes": true,
