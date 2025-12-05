@@ -19,7 +19,10 @@ export default function AccountListItem({
   handleUpdate,
 }: AccountProps) {
   function handleAccountDetails() {
-    router.push(`/transaction/${accountID}`);
+    router.push({
+      pathname: "/transaction/[id]",
+      params: { id: accountID },
+    });
   }
 
   return (
