@@ -12,9 +12,9 @@ import {
 } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
-import { ScrollViewWithInsets } from "../../src/components/ScrollViewWithInset";
 import { signup } from "../../src/services/authentication";
 import AuthHeader from "../components/AuthHeader";
+import { ScrollViewWithInsets } from "../components/ScrollViewWithInset";
 import AuthInput from "../components/ui/AuthInput";
 import PrimaryButton from "../components/ui/PrimaryButton";
 import { COLORS } from "../styles/OnboardingStyles";
