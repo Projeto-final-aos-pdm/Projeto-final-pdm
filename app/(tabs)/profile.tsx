@@ -1,16 +1,10 @@
 import { Stack, router, useFocusEffect } from "expo-router";
 import React, { useCallback, useState } from "react";
-import {
-  Alert,
-  SafeAreaView,
-  ScrollView,
-  StatusBar,
-  StyleSheet,
-  View,
-} from "react-native";
+import { Alert, ScrollView, StatusBar, StyleSheet, View } from "react-native";
 
 import { deleteUser, getUserData } from "@/src/services/user";
 import { User } from "@/src/types/userTypes";
+import { SafeAreaView } from "react-native-safe-area-context";
 import { logout } from "../../src/services/authentication";
 import { useStore } from "../../src/store/storage";
 import ProfileHeader from "../components/profile/ProfileHeader";
