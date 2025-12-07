@@ -1,3 +1,12 @@
+# Integrantes da equipe
+
+- Arthur Levy Batista Vieira (853755)
+- Beatriz Suelen R. da Costa (854108)
+- Cauã Gabriel Nonato Peres (853751)
+- Giullya Vitória da S. Gomes (854107)
+- Jansen Yuki Cruz Okasaki (853837)
+- Marcos Filipe Gonçalves Capella (706)
+
 # Welcome to your Expo app 👋
 
 This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
